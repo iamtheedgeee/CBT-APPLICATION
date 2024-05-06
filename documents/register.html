@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />   
+    <style>
+        body{
+            text-align: center;
+            align-items: center;
+            align-self: center;
+        }
+    </style> 
+    <title>Register User</title>
+</head>
+    <body>
+        <h1>Register User</h1>
+        <form>
+            <label for="fname">Enter Student First Name:</label>
+            <input type="text" id="F_name" name="fname" autocomplete="false" placeholder="eg:John" required><br>
+            <label for="lname">Enter Student Last Name:</label>
+            <input type="text" id="L_name" name="lname" autocomplete="false" placeholder="eg:Smith" required><br>
+            <label for="password">Set Student Password:</label>
+            <input type="password" id="password" name="Password" autocomplete="false" placeholder="******" required><br>
+            <button type="submit" onclick="register()">SUBMIT</button>
+        </form>
+    </body>
+    <script>
+        async function register(){
+            event.preventDefault()
+            var first_name=document.getElementById("F_name").value
+            var last_name=document.getElementById("L_name").value
+            var password=document.getElementById("password").value
+
+            const response= await fetch('http://localhost:5000/api/students/',{
+                method:"POST",
+                headers: {'Content-Type':'application/json'},
+                body:JSON.stringify({first_name:first_name,last_name:last_name,password:password})
+            })
+            console.log(await response.json())
+        }
+
+        
+    </script>
+
