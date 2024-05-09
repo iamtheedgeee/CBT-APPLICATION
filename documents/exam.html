@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
+    <title>Welcome to CBT App</title>
+    <body>
+        <h1>WELCOME TO EXAM</h1>
+        <a href="register.html">register</a>
+        <a href="login.html">login</a>
+        <a href="http://localhost:5000/api/students/">view all users</a>
+        <a href="exam.html">exam</a>
+
+        <form name="select">
+            <h2 id="question"></h2>
+            <input type="radio" name="answer" id="A" value="" onclick="save()"><span id="a"></span><br>
+            <input type="radio" name="answer" id="B" value="" onclick="save()"><span id="b"></span><br>
+            <input type="radio" name="answer" id="C" value="" onclick="save()"><span id="c"></span><br>
+            <input type="radio" name="answer" id="D" value="" onclick="save()"><span id="d"></span><br>
+        </form>
+        <button onclick="previous()">previous</button>
+        <button onclick="next()">next</button>
+        <button onclick="submit()">Submit</button>
+
+    </body>
+    <script src="exam.js"></script>
+</head>

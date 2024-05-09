@@ -10,18 +10,20 @@
             align-self: center;
         }
     </style> 
-    <title>Register User</title>
+    <title>Login Page</title>
 </head>
     <body>
-        <h1>Register User</h1>
+        <h1>Enter Student Details for Login</h1>
         <form>
+            <label for="id_number">Enter Student ID:</label>
+            <input type="text" id="id" name="id_number" autocomplete="false" placeholder="eg:2024/00100" required><br>
             <label for="fname">Enter Student First Name:</label>
             <input type="text" id="F_name" name="fname" autocomplete="false" placeholder="eg:John" required><br>
             <label for="lname">Enter Student Last Name:</label>
             <input type="text" id="L_name" name="lname" autocomplete="false" placeholder="eg:Smith" required><br>
-            <label for="password">Set Student Password:</label>
+            <label for="password">Enter Password:</label>
             <input type="password" id="password" name="Password" autocomplete="false" placeholder="******" required><br>
-            <button type="submit" onclick="register()">SUBMIT</button>
+            <button type="submit" onclick="validate()">Login</button>
         </form>
     </body>
     <script src="control.js"></script>

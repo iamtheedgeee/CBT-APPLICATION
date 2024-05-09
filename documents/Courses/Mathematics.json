@@ -1,0 +1,66 @@
+[
+    {
+        "Course_name":"",
+        "Number_of_questions":5
+    },
+    {   
+        "Number":"Q1",
+        "Question":"What is 1 plus 1?",
+        "options":
+            {
+                "a":2,
+                "b":3,
+                "c":4,
+                "d":10
+            },
+        "Answer":2
+    },
+    {
+        "Number":"Q2",
+        "Question":"How Old is Jesus?",
+        "options":
+            {
+                "a":30,
+                "b":40,
+                "c":50,
+                "d":9
+            },
+        "Answer":50
+    },
+    {   
+        "Number":"Q3",
+        "Question":"How old is Ichigo Kurosaki",
+        "options":
+            {
+                "a":2,
+                "b":3,
+                "c":4,
+                "d":10
+            },
+        "Answer":10
+    },
+    {   
+        "Number":"Q4",
+        "Question":"When is Independence day",
+        "options":
+            {
+                "a":1960,
+                "b":1967,
+                "c":1616,
+                "d":2024
+            },
+        "Answer":1960
+    },
+    {   
+        "Number":"Q5",
+        "Question":"What is the reason for life?",
+        "options":
+            {
+                "a":"Who knows",
+                "b":"death",
+                "c":"idk",
+                "d":"stars"
+            },
+        "Answer":"Who knows"
+    }
+]
