@@ -1,5 +1,8 @@
 [
-    null,
+    {
+        "Course_name":"",
+        "Number_of_questions":5
+    },
     {
         "Number": "Q1",
         "Question": "How long does it take to have a nap",

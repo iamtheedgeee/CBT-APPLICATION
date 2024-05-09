@@ -40,25 +40,20 @@
             create_block=document.getElementById("CREATE")
             edit_block=document.getElementById("EDIT")
             document.body.removeChild(edit_block)
-            //set_course_name=null
-            //max_questions=null
-
-            questions_list=[]
             index=1
 
             async function create(){
                 event.preventDefault()
                 course_name=document.getElementById("course_name").value
                 max_questions=document.getElementById("number_of_questions").value
+                questions_list=[{Course_name:course_name,Number_of_questions:max_questions}]
                 const response= await fetch('http://localhost:5000/api/exam/',{
                     method:"POST",
                     headers: {'Content-Type':'application/json'},
-                    body:JSON.stringify({course_name:course_name,number_of_questions:max_questions})
+                    body:JSON.stringify(questions_list)
                 })
-                result= await response.text()
+                //result= await response.text()
                    
-                //set_course_name=course_name
-                //max_questions=Number(number_of_questions)
                 document.body.removeChild(create_block)
                 document.body.appendChild(edit_block)
                 render()
@@ -112,7 +107,6 @@
                         }
                     }
                 }
-                console.log(questions_list)
 
             }
             function Next(move){
@@ -145,6 +139,7 @@
                     },
                     Answer: answer.value
                 }
+                
                 let completed=0
                 for(let question of questions_list.slice(1)){
                     if(
@@ -168,7 +163,7 @@
                 if(completed<max_questions){
                     return "Fill in all the blanks before submitting"
                 }
-
+                
                 const response= await fetch('http://localhost:5000/api/exam/',{
                     method: "PUT",
                     headers:{'Content-Type':'application/json'},

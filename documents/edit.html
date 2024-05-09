@@ -17,7 +17,7 @@
             </form>
         </div>
         <div id="EDIT">
-            <h1 id="Name"></h1>
+            <h1 id="name"></h1>
                 <form>
                     <h3 id="q_no"></h3>
                     Question: <input type="text" name="Question" id="question" value=""><br><br>
@@ -37,12 +37,23 @@
             edit_block=document.getElementById("EDIT")
             document.body.removeChild(edit_block)
             
-            async function select(){
-                course_name=document.getElementById("course")
-                const response= await fetch(`http://localhost:5000/api/exam/${course_name}`)
-            }
-            questions_list=[]
             index=1
+            async function select(){
+                event.preventDefault()
+                course_name=document.getElementById("course").value
+                const response= await fetch(`http://localhost:5000/api/exam/${course_name}`)
+                questions_list=await response.json()
+
+                const meta_data=questions_list[0]
+                max_questions=meta_data.Number_of_questions
+
+                document.body.removeChild(select_block)
+                document.body.appendChild(edit_block)
+                render()
+
+
+            }
+            
  
             function render(){ 
 
@@ -54,7 +65,7 @@
                 }
 
                 document.getElementById("q_no").innerHTML=`Q${index}`
-                document.getElementById("name").innerHTML=set_course_name
+                document.getElementById("name").innerHTML=course_name
                 question=document.getElementById("question")
                 option_1=document.getElementById("one")
                 option_2=document.getElementById("two")

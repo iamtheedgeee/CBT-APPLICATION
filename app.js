@@ -11,8 +11,8 @@ app.use(express.json())
 //EXAMS
 //Create Exams
 app.post('/api/exam/',(req,res)=>{
-    const{course_name}=req.body
-    fs.writeFile(`./documents/Courses/${course_name}.json`,'[]',(err,result)=>{
+    const{Course_name}=req.body[0]
+    fs.writeFile(`./documents/Courses/${Course_name}.json`,JSON.stringify(req.body),(err,result)=>{
         if(err){
             return res.status(404).send("Failure")
         }
