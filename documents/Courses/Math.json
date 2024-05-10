@@ -1,61 +1,20 @@
 [
     {
         "Course_name": "Math",
-        "Number_of_questions": "5"
+        "Number_of_questions": "1",
+        "Students_written": [
+            "2024-001"
+        ]
     },
     {
         "Number": "Q1",
-        "Question": "What is the nmae ",
+        "Question": "What is the algebraic sum of the first 10 prime numbers",
         "options": {
-            "a": "das",
-            "b": "ds",
-            "c": "as",
-            "d": "sas"
+            "a": "12",
+            "b": "10",
+            "c": "32",
+            "d": "12"
         },
-        "Answer": "asas"
-    },
-    {
-        "Number": "Q2",
-        "Question": "sasa",
-        "options": {
-            "a": "sasa",
-            "b": "asa",
-            "c": "sasa",
-            "d": "asas"
-        },
-        "Answer": "asasa"
-    },
-    {
-        "Number": "Q3",
-        "Question": "dsad",
-        "options": {
-            "a": "adsad",
-            "b": "asdsd",
-            "c": "asds",
-            "d": "asdasd"
-        },
-        "Answer": "saddsd"
-    },
-    {
-        "Number": "Q4",
-        "Question": "asfdad",
-        "options": {
-            "a": "asfasd",
-            "b": "asfsdsafdas",
-            "c": "sd",
-            "d": "d"
-        },
-        "Answer": "sd"
-    },
-    {
-        "Number": "Q5",
-        "Question": "asfa",
-        "options": {
-            "a": "dsf",
-            "b": "d",
-            "c": "sdf",
-            "d": "sdf"
-        },
-        "Answer": "fdsd"
+        "Answer": "5"
     }
 ]

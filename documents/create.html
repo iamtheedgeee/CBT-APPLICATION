@@ -13,7 +13,7 @@
             <form>
             Course Name: <input type="text" name="names" id="course_name" autocomplete="false" required><br>
             Number of Questions <input type="number" name="numbers" id="number_of_questions" required><br>
-            <button onclick="create()">Create Course</button>
+            <button type="submit" onclick="create()">Create Course</button>
         </form>
         </div>
         
@@ -46,17 +46,30 @@
                 event.preventDefault()
                 course_name=document.getElementById("course_name").value
                 max_questions=document.getElementById("number_of_questions").value
-                questions_list=[{Course_name:course_name,Number_of_questions:max_questions}]
+                questions_list=[{Course_name:course_name,Number_of_questions:max_questions,Students_written:[]}]
                 const response= await fetch('http://localhost:5000/api/exam/',{
                     method:"POST",
                     headers: {'Content-Type':'application/json'},
                     body:JSON.stringify(questions_list)
                 })
-                //result= await response.text()
-                   
-                document.body.removeChild(create_block)
-                document.body.appendChild(edit_block)
-                render()
+                //queue alert box of value of request
+                result= await response.text()
+                let alert_substitute=document.createElement("span")
+                alert_substitute.textContent=result
+                document.body.appendChild(alert_substitute)
+
+                if(result==="Course already created"){
+                    setTimeout(()=>{
+                    document.location="http://localhost:5000/create.html"
+                },1500)
+                }
+                setTimeout(()=>{
+                    document.body.removeChild(alert_substitute)
+                    document.body.removeChild(create_block)
+                    document.body.appendChild(edit_block)
+                    render()
+                },1500)
+                
 
                 
             }
@@ -159,7 +172,7 @@
                         ){
                           completed+=1
                         }
-                }
+                }//AlERT HERE!!!
                 if(completed<max_questions){
                     return "Fill in all the blanks before submitting"
                 }
@@ -169,8 +182,7 @@
                     headers:{'Content-Type':'application/json'},
                     body: JSON.stringify({course:course_name,questions:questions_list})
                 })
-                //document.write(JSON.stringify({course:set_course_name}))
-                //document.write(await response.text())
+                document.write(await response.text())
                 
             }
            

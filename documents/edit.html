@@ -37,7 +37,7 @@
             edit_block=document.getElementById("EDIT")
             document.body.removeChild(edit_block)
             
-            index=1
+            
             async function select(){
                 event.preventDefault()
                 course_name=document.getElementById("course").value
@@ -45,8 +45,17 @@
                 questions_list=await response.json()
 
                 const meta_data=questions_list[0]
+                if(meta_data==="EIRF"){
+                    document.write("An error occured")
+                }
+                else if(meta_data==="FNF"){
+                        document.write("No such course, try again")
+                        setTimeout(()=>{
+                            document.location='http://localhost:5000/edit.html'
+                        },2000)
+                }
                 max_questions=meta_data.Number_of_questions
-
+                index=1
                 document.body.removeChild(select_block)
                 document.body.appendChild(edit_block)
                 render()
@@ -152,12 +161,16 @@
                           completed+=1
                         }
                 }
+                //ALERT HERE
                 if(completed<max_questions){return "Fill in all the blanks before submitting"}
                 const response= await fetch('http://localhost:5000/api/exam/',{
                     method: "PUT",
                     headers:{'Content-Type':'application/json'},
                     body: JSON.stringify({course:course_name,questions:questions_list})
-                })                
+                })
+                result= await response.text()
+                document.write(result)
+                //ALERT HERE
             }
            
         </script>

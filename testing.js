@@ -1,2 +1,4 @@
-list=["happy","rapping",""]
-console.log(list.slice(1))
+x=false
+if(x){
+    console.log("Hello world")
+}else{console.log("Die")}

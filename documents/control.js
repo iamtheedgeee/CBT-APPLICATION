@@ -3,18 +3,14 @@ async function register(){
     var first_name=document.getElementById("F_name").value
     var last_name=document.getElementById("L_name").value
     var password=document.getElementById("password").value
-
     try{
         const response= await fetch('http://localhost:5000/api/students/',{
-        method:"POST",
-        headers: {'Content-Type':'application/json'},
-        body:JSON.stringify({id:"",first_name:first_name,last_name:last_name,password:password})
+            method:"POST",
+            headers: {'Content-Type':'application/json'},
+            body:JSON.stringify({id:"",first_name:first_name,last_name:last_name,password:password})
     })
         student=await response.json()
-        console.log(student)
-
-
-        login(student.id,student.F_name,student.password)
+        login(student.id,student.first_name,student.password)
     }catch(err){console.log(error)}
     
     
@@ -44,8 +40,5 @@ async function validate(){
 
 }
 async function login(id,first_name,password){
-    console.log("WHOO")
-    document.location=`http://localhost:5000/dashboard/${id}/${first_name}/${password}`
-    
-    
+    document.location=`http://localhost:5000/`
 }

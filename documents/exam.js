@@ -1,14 +1,55 @@
-async function main(){
-    const response= await fetch('./questions.json')
+exam=document.getElementById("EXAM")
+document.body.removeChild(exam)
+choose=document.getElementById("CHOOSE")
+Login=document.getElementById("LOGIN")
+async function choose(){
+    manual_selction=true
+    course=document.getElementById("course")
+}
+async function login(){
+    event.preventDefault()
+    const student_id=document.getElementById("student_id").value
+    const password=document.getElementById("password").value
+    const response= await fetch(`http://localhost:5000/api/students/${student_id}`)
+    try{
+        const student=await response.json()
+        if(student.password===password){
+            document.body.removeChild(Login)
+            document.body.appendChild(exam)
+            main(student)
+        }else{
+            document.write("Incorrect password")
+        }
+    }catch(err){document.write("Invalid ID")}
+}
+async function main(student){
+    const response= await fetch('http://localhost:5000/api/exam/')
     questions=await response.json()
-    index=1
-    answers={}
-    render()
+    course_meta_data=questions[0]
+    console.log(student)
+    console.log(questions)
+    Student=student
+    student_id=student.id
+    first_name=student.first_name
+    last_name=student.last_name
+    course_name=course_meta_data.Course_name
+    students_written=course_meta_data.Students_written
+
+    if(students_written.includes(student_id)){
+        document.write("You've already written this course!")
+        setTimeout(() => {
+            document.location='http://localhost:5000/exam.html'
+        },1500);
+    }else{
+        index=1
+        answers={}
+        render()
+    }
+    
 }
 function render(){ 
     if(index>questions.length-1){
         index=1
-        
     }
     if(index<1){
         index=1
@@ -59,7 +100,7 @@ function render(){
             }
         }
     }
-    
+
     //console.log(answers)      
 }
 
@@ -72,19 +113,86 @@ function save(){
         }
     }    
 }
+
 function submit(){
-    score=0
-    //console.log(answers)
+    let score=0
+    let total=questions.length-1
     for(let question of questions.slice(1)){
-        //console.log(question.Number+question.Answer)
         for(let answer in answers){
-            //console.log(`${answer}${answers[answer]}`)
-            if(question.Number==answer && question.Answer==answers[answer]){
-                score+=1
-            
+            if(question.Number==answer){
+                if(question.Answer==answers[answer]){
+                    score+=1
+                }else{
+                    console.log(`Failed ${question.Number}`)
+                }  
             }
         }
     }
     console.log(score)
+    score=get_score(score,total)
+    grade=get_grade(score)
+    Student.results.push(
+        {
+            course: course_name,
+            score: score,
+            grade: grade
+        }
+    )
+    questions[0].Students_written.push(student_id)
+    update_student()
+    update_course()
+    document.write("Successfully finished exam")
+    setTimeout(() => {
+        document.location="http://localhost:5000/exam.html/"
+    }, 5000);
 }
-main()
+function get_score(score,total){
+    let Score=(score/total)*100
+    return Score
+}
+function get_grade(score){
+    let grade=""
+    if(score>=70){
+        grade="A"
+    }
+    else if(score>=60){
+        grade="B"
+    }
+    else if(score>=50){
+        grade="C"
+    }
+    else if(score>=40){
+        grade="D"
+    }
+    else{
+        grade="F"
+    }
+    return grade
+}
+
+async function update_student(){
+    try{
+        const response= await fetch(`http://localhost:5000/api/students/`,{
+        method:"PUT",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(Student)
+        })
+        console.log(await response.text())
+    }catch(err){console.log(err)}
+    
+}
+
+async function update_course(){
+    try{
+        const response= await fetch(`http://localhost:5000/api/exam/`,{
+        method:"PUT",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({course:course_name,questions:questions})
+        })
+        console.log(await response.text())
+    }catch(err){console.log(err)}
+}
