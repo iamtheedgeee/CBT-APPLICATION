@@ -1,10 +1,10 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />   
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
     <style>
-       
         /*
 =============== 
 Fonts
@@ -73,10 +73,6 @@ Global Styles
   box-sizing: border-box;
 }
 body {
-    
-    text-align: center;
-    align-items: center;
-    align-self: center;    
   font-family: var(--ff-secondary);
   background: var(--clr-grey-10);
   color: var(--clr-grey-1);
@@ -257,19 +253,48 @@ nav {
 }
     
     </style> 
-    <title>Register User</title>
 </head>
-    <body>
-        <h1>Register User</h1>
-        <form>
-            <label for="fname">Enter Student First Name:</label>
-            <input type="text" id="F_name" name="fname" autocomplete="false" placeholder="eg:John" required><br>
-            <label for="lname">Enter Student Last Name:</label>
-            <input type="text" id="L_name" name="lname" autocomplete="false" placeholder="eg:Smith" required><br>
-            <label for="password">Set Student Password:</label>
-            <input type="password" id="password" name="Password" autocomplete="false" placeholder="******" required><br>
-            <button type="submit" onclick="register()">SUBMIT</button>
-        </form>
-    </body>
-    <script src="control.js"></script>
+<body>
+    <h1>Welcome Admin</h1>
+    <p>Be sure to set your password and keep it safe</p>
+    <ul>
+        <li><a href="" onclick="select_exam()">Select Exam</a></li>
+        <li><a href="" onclick="create_exam()">Create Exam</a></li>
+        <li><a href="" onclick="edit_exam()">Edit Exam</a></li>
+        <li><a href="" onclick="view_students()">View all Students</a></li>
+        <li><a href="http://192.168.43.93:5000/admin/set-password">Set Password</a></li>
+    </ul>
+    <div id="input-block">
+        Input Password: <input type="password" id="password" required><button onclick="Go()">Go</button>
+    </div>
+    <script>
+    
+        input_block=document.getElementById("input-block")
+        document.body.removeChild(input_block)
+        path=''
 
+        function select_exam(){
+            event.preventDefault()
+            path='select-exam'
+            document.body.appendChild(input_block)
+        }
+
+        function create_exam(){
+            event.preventDefault()
+            path='create-exam'
+            document.body.appendChild(input_block)
+        }
+
+        function edit_exam(){
+            event.preventDefault()
+            path='edit-exam'
+            document.body.appendChild(input_block)
+        }
+
+        function Go(){
+            const password=document.getElementById("password").value
+            document.location=`http://192.168.43.93:5000/admin/${path}/${password}`
+        }
+    </script>
+</body>
+</html>        

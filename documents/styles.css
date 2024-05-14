@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />   
-    <style>
-       
-        /*
+/*
 =============== 
 Fonts
 ===============
@@ -73,10 +66,6 @@ Global Styles
   box-sizing: border-box;
 }
 body {
-    
-    text-align: center;
-    align-items: center;
-    align-self: center;    
   font-family: var(--ff-secondary);
   background: var(--clr-grey-10);
   color: var(--clr-grey-1);
@@ -255,21 +244,3 @@ nav {
     color: var(--clr-primary-7);
   }
 }
-    
-    </style> 
-    <title>Register User</title>
-</head>
-    <body>
-        <h1>Register User</h1>
-        <form>
-            <label for="fname">Enter Student First Name:</label>
-            <input type="text" id="F_name" name="fname" autocomplete="false" placeholder="eg:John" required><br>
-            <label for="lname">Enter Student Last Name:</label>
-            <input type="text" id="L_name" name="lname" autocomplete="false" placeholder="eg:Smith" required><br>
-            <label for="password">Set Student Password:</label>
-            <input type="password" id="password" name="Password" autocomplete="false" placeholder="******" required><br>
-            <button type="submit" onclick="register()">SUBMIT</button>
-        </form>
-    </body>
-    <script src="control.js"></script>
-

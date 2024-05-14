@@ -1,4 +1,4 @@
-x=false
-if(x){
-    console.log("Hello world")
-}else{console.log("Die")}
+x="b"
+if(x==="a" || "b"){
+    console.log('das')
+}

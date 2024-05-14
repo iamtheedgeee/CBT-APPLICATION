@@ -2,15 +2,13 @@ exam=document.getElementById("EXAM")
 document.body.removeChild(exam)
 choose=document.getElementById("CHOOSE")
 Login=document.getElementById("LOGIN")
-async function choose(){
-    manual_selction=true
-    course=document.getElementById("course")
-}
+
+
 async function login(){
     event.preventDefault()
     const student_id=document.getElementById("student_id").value
     const password=document.getElementById("password").value
-    const response= await fetch(`http://localhost:5000/api/students/${student_id}`)
+    const response= await fetch(`http://192.168.43.93:5000/api/students/${student_id}`)
     try{
         const student=await response.json()
         if(student.password===password){
@@ -23,7 +21,7 @@ async function login(){
     }catch(err){document.write("Invalid ID")}
 }
 async function main(student){
-    const response= await fetch('http://localhost:5000/api/exam/')
+    const response= await fetch('http://192.168.43.93:5000/api/exam/')
     questions=await response.json()
     course_meta_data=questions[0]
     console.log(student)
@@ -34,20 +32,29 @@ async function main(student){
     last_name=student.last_name
     course_name=course_meta_data.Course_name
     students_written=course_meta_data.Students_written
-
+    time_milliseconds=course_meta_data.time*60000
     if(students_written.includes(student_id)){
         document.write("You've already written this course!")
         setTimeout(() => {
-            document.location='http://localhost:5000/exam.html'
+            document.location='http://192.168.43.93:5000/exam.html'
         },1500);
     }else{
         index=1
         answers={}
-        render()
+        //start timer
+
+        setInterval(() => {
+            time_milliseconds-=1000
+            console.log(time_milliseconds)
+            render()
+        },1000);
+
+       
     }
     
 }
 function render(){ 
+    
     if(index>questions.length-1){
         index=1
     }
@@ -55,8 +62,9 @@ function render(){
         index=1
     }
     selected_question=questions[index]
+    let exam_title=document.getElementById("exam")
     let question_obj=document.getElementById("question")
-    let question_number=document.getElementById("q_number")
+    let time= document.getElementById("time")
     let option_1=document.getElementById("A")
     let option_2=document.getElementById("B")
     let option_3=document.getElementById("C")
@@ -67,8 +75,10 @@ function render(){
     let option_3_span=document.getElementById("c")
     let option_4_span=document.getElementById("d")
 
-    
+    time_seconds=Math.floor(time_milliseconds/1000)
 
+    exam_title.innerHTML=`Exam-${course_name}`
+    time.innerHTML=`Time Left--${time_seconds}`
     question_obj.innerHTML=`${index}. ${selected_question.Question}`
     option_1.value=selected_question.options["a"]
     option_1_span.innerHTML=`<b>A</b>: ${selected_question.options["a"]}`
@@ -100,8 +110,19 @@ function render(){
             }
         }
     }
+    if(time_milliseconds<0){
+        submit()
+    }
 
-    //console.log(answers)      
+    document.onvisibilitychange=()=>{
+        if(document.visibilityState==='hidden'){
+            submit()
+        }
+    }
+    window.onload=()=> {
+        submit()
+    }
+
 }
 
 function next(){index+=1;render();}
@@ -139,12 +160,13 @@ function submit(){
         }
     )
     questions[0].Students_written.push(student_id)
-    update_student()
     update_course()
+    update_student()
+   
     document.write("Successfully finished exam")
     setTimeout(() => {
-        document.location="http://localhost:5000/exam.html/"
-    }, 5000);
+        document.location="http://192.168.43.93:5000/exam.html"
+    }, 2000);
 }
 function get_score(score,total){
     let Score=(score/total)*100
@@ -172,7 +194,7 @@ function get_grade(score){
 
 async function update_student(){
     try{
-        const response= await fetch(`http://localhost:5000/api/students/`,{
+        const response= await fetch(`http://192.168.43.93:5000/api/students/`,{
         method:"PUT",
         headers: {
             "Content-Type":"application/json"
@@ -186,7 +208,7 @@ async function update_student(){
 
 async function update_course(){
     try{
-        const response= await fetch(`http://localhost:5000/api/exam/`,{
+        const response= await fetch(`http://192.168.43.93:5000/api/exam/`,{
         method:"PUT",
         headers: {
             "Content-Type":"application/json"

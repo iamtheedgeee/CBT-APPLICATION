@@ -4,6 +4,7 @@ const express=require('express')
 const storage_path='./documents/students.json'
 const exam_storage_path='./documents/Courses/'
 
+//UTILITY FUNCTIONS
 async function get_students_list(){
     try{
         const file=await fs.promises.readFile(storage_path,'utf8')
@@ -12,12 +13,23 @@ async function get_students_list(){
     }catch(err){console.log(err);return false} 
 }
 
+async function get_course_list(){
+    try {
+        const course_list=await fs.promises.readdir(exam_storage_path)
+        return course_list
+    } catch (error) {
+        return false
+    }
+    
+}
+
 async function write_students_list(body){
     try{
         const process=await fs.promises.writeFile(storage_path,JSON.stringify(body))
         return true
     }catch(err){console.log(err);return false}
 }
+
 function get_student_id(students_list){
     let highest_id=0
     for(let student of students_list){
@@ -28,6 +40,7 @@ function get_student_id(students_list){
     return new_student_id
 }
 
+//STUDENT FUNCTIONS
 async function create_student(req,res,next){
     const student=req.body
     let students_list=await get_students_list()
@@ -43,6 +56,7 @@ async function create_student(req,res,next){
     else{return res.send("Error in updating storage")}
     next()
 }
+
 async function get_student(req,res,next){
     const {id}=req.params
     let students_list= await get_students_list()
@@ -59,6 +73,56 @@ async function get_student(req,res,next){
     next()
 }
 
+async function update_student(req,res,next){
+    const student=req.body
+    
+    let students_list=await get_students_list()
+    let student_index=Number(student.id.slice(-3))-1
+    students_list[student_index]=student
+    const process= write_students_list(students_list)
+    return res.send("Successfully Updated Student")
+    next()
+}
+
+async function login(req,res,next){
+    const {id,first_name,password}=req.params
+    const students_list=await get_students_list()
+    const student=students_list.find(student=>{
+        if(student.id===id){
+            return student
+        }
+    })
+    try{
+        if(id===student.id && student.first_name===first_name && student.password===password){
+            results=JSON.stringify(student.results)
+            res.status(200).send(`<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Student_Dashboard</title>
+            </head>
+            <body>
+                <h1>Welcome ${student.first_name} ${student.last_name}</h1><br>
+                <h2>Results</h2>
+                <p>${results}</p>
+                <a href="http://192.168.43.93:5000/exam.html">Take Exam</a>
+                <p>More features coming soon..........</p>
+            </body>
+                <script>
+                    async function results(){
+                        event.preventDefault()
+                    
+                    }
+                </script>
+            </html>`)
+        }
+    }catch(err){res.send("An error occured")}
+    
+}
+
+
+//COURSE FUNCTIONS
 async function create_course(req,res,next){
     const{Course_name}=req.body[0]
     const course_list= await get_course_list()
@@ -88,21 +152,19 @@ async function get_course(req,res,next){
     next()
 }
 
-async function get_course_list(){
-    try {
-        const course_list=await fs.promises.readdir(exam_storage_path)
-        return course_list
-    } catch (error) {
-        return false
-    }
-    
-}
-
 async function update_course(req,res,next){
-    const {course,questions}=req.body
+    const {course,questions,old_name}=req.body
     try {
         const process= await fs.promises.writeFile(`${exam_storage_path}${course}.json`,JSON.stringify(questions))
-        return res.send(`Successfully updated ${course}` )
+        if(old_name){
+            if(old_name!==course){
+                await fs.promises.unlink(`${exam_storage_path}${old_name}.json`)
+            }
+        }
+        return res.send(`Successfully updated ${course}`)
+
+        
+        
     }catch(err){
         console.log(err)
         return res.send("an error occured")
@@ -110,15 +172,48 @@ async function update_course(req,res,next){
     next()
 }
 
-async function update_student(req,res,next){
-    const student=req.body
-    let students_list=await get_students_list()
-    let student_index=Number(student.id.slice(-3))-1
-    students_list[student_index]=student
-    const process= write_students_list(students_list)
-    return res.send("Successfully Updated Student")
+async function set_course(req,res,next){
+    const {course}=req.body
+    const course_list=await get_course_list()
+
+    if(course_list.includes(`${course}.json`)){
+        fs.writeFile('./documents/Courses/current-exam.txt',course,(err,result)=>{
+            if(err){
+                console.log(err)
+                return res.send("An Error Occured")
+            }
+            return res.send("Successfully Updated Exam")
+        })
+    }else{
+        return res.send("nill")
+    }
     next()
 }
 
-module.exports={create_student,get_student,create_course,get_course,update_course,update_student}
+
+//ADMIN FUNCTIONS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//EXPORTS
+module.exports={
+    create_student,
+    get_student,
+    create_course,
+    get_course,
+    update_course,
+    update_student,
+    set_course,
+    login}
 

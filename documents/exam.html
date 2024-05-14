@@ -5,21 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
     <title>Welcome to CBT App</title>
     <body>
-        <div id="CHOOSE"></div>
         <div id="LOGIN">
             <h1>ENTER STUDENT ID AND PASSWORD TO START EXAM</h1><br>
             Student ID: <input type="text" id="student_id"><br>
             Password: <input type="text" id="password"><br>
             <button onclick="login()">Begin</button>
+            <a href="./index.html">Home</a>
 
         </div>
+
         <div id="EXAM">
-            <h1>WELCOME TO EXAM</h1>
-            <a href="register.html">register</a>
-            <a href="login.html">login</a>
-            <a href="http://localhost:5000/api/students/">view all users</a>
-            <a href="exam.html">exam</a>
-    
+            <h1 id="exam"></h1>
+            
             <form name="select">
                 <h2 id="question"></h2>
                 <input type="radio" name="answer" id="A" value="" onclick="save()"><span id="a"></span><br>
@@ -29,7 +26,10 @@
             </form>
             <button onclick="previous()">previous</button>
             <button onclick="next()">next</button>
-            <button onclick="submit()">Submit</button>    
+            <button onclick="submit()">Submit</button><br>
+
+            <span id="time">Time Left:</span>
+
         </div>
     </body>
     <script src="exam.js"></script>
