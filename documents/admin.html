@@ -262,7 +262,7 @@ nav {
         <li><a href="" onclick="create_exam()">Create Exam</a></li>
         <li><a href="" onclick="edit_exam()">Edit Exam</a></li>
         <li><a href="" onclick="view_students()">View all Students</a></li>
-        <li><a href="http://192.168.43.93:5000/admin/set-password">Set Password</a></li>
+        <li><a href="http://localhost:5000/admin/set-password">Set Password</a></li>
     </ul>
     <div id="input-block">
         Input Password: <input type="password" id="password" required><button onclick="Go()">Go</button>
@@ -293,7 +293,7 @@ nav {
 
         function Go(){
             const password=document.getElementById("password").value
-            document.location=`http://192.168.43.93:5000/admin/${path}/${password}`
+            document.location=`http://localhost:5000/admin/${path}/${password}`
         }
     </script>
 </body>

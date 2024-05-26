@@ -106,7 +106,7 @@ async function login(req,res,next){
                 <h1>Welcome ${student.first_name} ${student.last_name}</h1><br>
                 <h2>Results</h2>
                 <p>${results}</p>
-                <a href="http://192.168.43.93:5000/exam.html">Take Exam</a>
+                <a href="http://localhost:5000/exam.html">Take Exam</a>
                 <p>More features coming soon..........</p>
             </body>
                 <script>

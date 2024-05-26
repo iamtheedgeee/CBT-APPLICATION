@@ -296,7 +296,7 @@ nav {
                 max_questions=document.getElementById("number_of_questions").value
                 time_in_minuites=document.getElementById("time").value
                 questions_list=[{Course_name:course_name,Number_of_questions:max_questions,time:time_in_minuites,Students_written:[]}]
-                const response= await fetch('http://192.168.43.93:5000/api/exam/',{
+                const response= await fetch('http://localhost:5000/api/exam/',{
                     method:"POST",
                     headers: {'Content-Type':'application/json'},
                     body:JSON.stringify(questions_list)
@@ -310,7 +310,7 @@ nav {
 
                 if(result==="Course already created"){
                     setTimeout(()=>{
-                    document.location="http://192.168.43.93:5000/create.html"
+                    document.location="http://localhost:5000/create.html"
                 },1500)
                 }
                 setTimeout(()=>{
@@ -427,7 +427,7 @@ nav {
                     return "Fill in all the blanks before submitting"
                 }
                 
-                const response= await fetch('http://192.168.43.93:5000/api/exam/',{
+                const response= await fetch('http://localhost:5000/api/exam/',{
                     method: "PUT",
                     headers:{'Content-Type':'application/json'},
                     body: JSON.stringify({course:course_name,questions:questions_list})

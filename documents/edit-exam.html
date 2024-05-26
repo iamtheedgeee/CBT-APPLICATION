@@ -298,7 +298,7 @@ nav {
             async function select(){
                 event.preventDefault()
                 course_name=document.getElementById("course").value
-                const response= await fetch(`http://192.168.43.93:5000/api/exam/${course_name}`)
+                const response= await fetch(`http://localhost:5000/api/exam/${course_name}`)
                 questions_list=await response.json()
 
                 meta_data=questions_list[0]
@@ -308,7 +308,7 @@ nav {
                 else if(meta_data==="FNF"){
                         document.write("No such course, try again")
                         setTimeout(()=>{
-                            document.location='http://192.168.43.93:5000/edit.html'
+                            document.location='http://localhost:5000/edit.html'
                         },2000)
                 }
                 max_questions=meta_data.Number_of_questions
@@ -440,7 +440,7 @@ nav {
                         }
                 }                   //ALERT HERE
                 if(completed<max_questions){return "Fill in all the blanks before submitting"}
-                const response= await fetch('http://192.168.43.93:5000/api/exam/',{
+                const response= await fetch('http://localhost:5000/api/exam/',{
                     method: "PUT",
                     headers:{'Content-Type':'application/json'},
                     body: JSON.stringify({course:course_name,questions:questions_list,old_name:old_name})

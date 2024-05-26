@@ -4,7 +4,7 @@
     var last_name=document.getElementById("L_name").value
     var password=document.getElementById("password").value
     try{
-        const response= await fetch('http://192.168.43.93:5000/api/students/',{
+        const response= await fetch('http://localhost:5000/api/students/',{
             method:"POST",
             headers: {'Content-Type':'application/json'},
             body:JSON.stringify({id:"",first_name:first_name,last_name:last_name,password:password})
@@ -24,7 +24,7 @@ async function validate(){
     var password=document.getElementById("password").value
     try{
     console.log(id)
-    const response= await fetch(`http://192.168.43.93:5000/api/students/${id}`)
+    const response= await fetch(`http://localhost:5000/api/students/${id}`)
     const actual =await response.json()
 
     const valid_f_name=(first_name===actual.first_name)
@@ -40,5 +40,5 @@ async function validate(){
 
 }
 async function login(id,first_name,password){
-    document.location=`http://192.168.43.93:5000/students/${id}/${first_name}/${password}`
+    document.location=`http://localhost:5000/students/${id}/${first_name}/${password}`
 }

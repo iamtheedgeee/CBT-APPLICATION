@@ -16,7 +16,7 @@
         async function select(){
             event.preventDefault()
             const course=document.getElementById("course").value
-            const response= await fetch('http://192.168.43.93:5000/api/exam/select',{
+            const response= await fetch('http://localhost:5000/api/exam/select',{
                 method : "POST",
                 headers:{
                     "Content-Type":"application/json"
@@ -29,7 +29,7 @@
             }else{
                 document.write(output)
                 setTimeout(() => {
-                    document.location='http://192.168.43.93:5000/admin.html'
+                    document.location='http://localhost:5000/admin.html'
                 }, 1500);
             }
             

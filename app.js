@@ -108,7 +108,7 @@ app.put('/api/students/',update_student,(req,res)=>{
 app.get('/students/:id/:first_name/:password',login,(req,res)=>{
 })
 
-app.listen(port,"192.168.43.93",()=>{
+app.listen(port,"localhost",()=>{
     console.log(`Listening on port ${port}`)
 })
 

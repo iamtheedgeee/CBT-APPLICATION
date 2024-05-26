@@ -8,7 +8,7 @@ async function login(){
     event.preventDefault()
     const student_id=document.getElementById("student_id").value
     const password=document.getElementById("password").value
-    const response= await fetch(`http://192.168.43.93:5000/api/students/${student_id}`)
+    const response= await fetch(`http://localhost:5000/api/students/${student_id}`)
     try{
         const student=await response.json()
         if(student.password===password){
@@ -21,7 +21,7 @@ async function login(){
     }catch(err){document.write("Invalid ID")}
 }
 async function main(student){
-    const response= await fetch('http://192.168.43.93:5000/api/exam/')
+    const response= await fetch('http://localhost:5000/api/exam/')
     questions=await response.json()
     course_meta_data=questions[0]
     console.log(student)
@@ -36,7 +36,7 @@ async function main(student){
     if(students_written.includes(student_id)){
         document.write("You've already written this course!")
         setTimeout(() => {
-            document.location='http://192.168.43.93:5000/exam.html'
+            document.location='http://localhost:5000/exam.html'
         },1500);
     }else{
         index=1
@@ -165,7 +165,7 @@ function submit(){
    
     document.write("Successfully finished exam")
     setTimeout(() => {
-        document.location="http://192.168.43.93:5000/exam.html"
+        document.location="http://localhost:5000/exam.html"
     }, 2000);
 }
 function get_score(score,total){
@@ -194,7 +194,7 @@ function get_grade(score){
 
 async function update_student(){
     try{
-        const response= await fetch(`http://192.168.43.93:5000/api/students/`,{
+        const response= await fetch(`http://localhost:5000/api/students/`,{
         method:"PUT",
         headers: {
             "Content-Type":"application/json"
@@ -208,7 +208,7 @@ async function update_student(){
 
 async function update_course(){
     try{
-        const response= await fetch(`http://192.168.43.93:5000/api/exam/`,{
+        const response= await fetch(`http://localhost:5000/api/exam/`,{
         method:"PUT",
         headers: {
             "Content-Type":"application/json"
