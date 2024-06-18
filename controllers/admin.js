@@ -1,12 +1,13 @@
 const Admin=require('../models/Admins')
-const Exams=require('../models/Exams')
+const Courses=require('../models/Courses')
 const {StatusCodes}=require('http-status-codes')
+const CustomAPIError=require('../errors/custom-api-error')
 
 const get_admin=async(req,res)=>{
     const{id:admin_id}=req.admin
     const admin=await Admin.findOne({_id:admin_id})
     if(!admin){
-        return res.status(StatusCodes.BAD_REQUEST).json({msg:'no admin found'})
+        throw new CustomAPIError("no admin found", StatusCodes.BAD_REQUEST)
     }
     res.status(StatusCodes.OK).json({msg:'success',admin})
 }
@@ -14,12 +15,12 @@ const get_admin=async(req,res)=>{
 const select_exam=async(req,res)=>{
     const{course_id}=req.body
     const{id:admin_id}=req.admin
-    const course=await Exams.findOne({_id:course_id})
+    const course=await Courses.findOne({_id:course_id})
     if(course.completed){
         const admin=await Admin.findOneAndUpdate({_id:admin_id},{hosting:course_id},{new:true,runValidators:true})
         return res.status(StatusCodes.OK).json({msg:`success`})
     }else{
-        return res.status(StatusCodes.BAD_REQUEST).json({msg:'cannot host an incomplete course'})
+        throw new CustomAPIError('cannot host an incomplete course',StatusCodes.BAD_REQUEST)
     }
     
 }

@@ -5,8 +5,6 @@ const{
     get_student,
     update_student,
     delete_student,
-    get_admins,
-    get_exam
 }=require('../controllers/student')
 
 //api/v2/student

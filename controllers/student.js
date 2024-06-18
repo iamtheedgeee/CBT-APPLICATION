@@ -1,6 +1,4 @@
 const Students=require('../models/Students')
-const Admins=require('../models/Admins')
-const Exams=require('../models/Exams')
 const {StatusCodes}=require('http-status-codes')
 
 const get_student=async(req,res)=>{
