@@ -9,7 +9,7 @@
     <marquee direction="Left" id="student-names"></marquee>
     <span id="reg_no"></span>
     <nav>
-        <button id="log-out-btn">LOG OUT</button><br>
+        <button onclick="logout()">LOG OUT</button><br>
         <ul>
             <li><a href="change_password.html">Change Password</a></li>
             <li><a href="/exam.html">Take Exam</a></li>
@@ -30,7 +30,10 @@
 const results=document.getElementById('results')
 const student_name=document.getElementById('student-names')
 const reg_no=document.getElementById('reg_no')
-
+function logout(){
+    document.cookie = "student_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.location='/'
+}
 async function personalise(){
     try {
         const response=await fetch('/api/v2/student')

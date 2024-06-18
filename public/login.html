@@ -19,8 +19,29 @@
             <label for="password">Enter Password:</label>
             <input type="password" id="password" name="Password" autocomplete="false" placeholder="******" required><br>
             <span id="status"></span>
-            <button type="submit" onclick="validate()">Login</button>
+            <button type="submit" onclick="login()">Login</button>
         </form>
     </body>
-    <script src="app.js"></script>
+<script>
+const result_span=document.getElementById("status")
+async function login(){
+event.preventDefault()
+const reg_no=document.getElementById('reg_no').value
+const password=document.getElementById('password').value
+try {
+    const response= await fetch('/api/v2/auth-student/login',{
+        method:"POST",
+        headers: {'Content-Type':'application/json'},
+        body:JSON.stringify({reg_no,password})
+})
+const {msg}=await response.json()
+if(msg==='success'){
+    result_span.innerHTML=msg
+    document.location='/student'
+}else{
+    result_span.innerHTML=msg
+}
+} catch (error) {console.log(error);document.write("an error occured")}
+}
+</script>
 

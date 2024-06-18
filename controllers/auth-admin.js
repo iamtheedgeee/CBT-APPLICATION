@@ -8,7 +8,10 @@ const register=async(req,res)=>{
     }
     const admin= await Admin.create(req.body)
     const token=admin.create_token()
-    res.cookie("admin_token",token)
+    const cookie_options = {
+        maxAge: 24 * 60 * 60 * 1000
+    }
+    res.cookie("admin_token",token,cookie_options)
     res.status(201).json({msg:'success'})
     
 }
@@ -24,7 +27,10 @@ const login=async(req,res)=>{
         throw new CustomAPIError('incorrect_password',StatusCodes.UNAUTHORIZED)
     }
     const token=admin.create_token()
-    res.cookie("admin_token",token)
+    const cookie_options = {
+        maxAge: 24 * 60 * 60 * 1000
+    }
+    res.cookie("admin_token",token,cookie_options)
     res.status(201).json({msg:'success'})
 }
 

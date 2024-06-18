@@ -26,5 +26,32 @@
             <button type="submit" onclick="register()">SUBMIT</button>
         </form>
     </body>
-    <script src="app.js"></script>
+<script>
+const result_span=document.getElementById("status")
+ async function register(){
+    event.preventDefault()
+    const first_name=document.getElementById("F_name").value
+    const last_name=document.getElementById("L_name").value
+    const password=document.getElementById("password").value
+    const email=document.getElementById("email").value
+    try{
+        const response= await fetch('/api/v2/auth-student/register',{
+            method:"POST",
+            headers: {'Content-Type':'application/json'},
+            body:JSON.stringify({first_name,last_name,password,email})
+    })
+        const {msg}=await response.json()
+        if(msg==='success'){
+            result_span.innerHTML=msg
+            document.location='/student'
+        }else{
+            result_span.innerHTML=msg
+        }
+        
+    }catch(err){console.log(err);document.write("An error occured")}
+
+}
+
+
+</script>
 

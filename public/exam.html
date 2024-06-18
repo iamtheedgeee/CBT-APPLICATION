@@ -212,6 +212,7 @@ async function Submit(){
         document.write(msg)
 
         setTimeout(() => {
+            document.cookie = "exam_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
             document.location='/exam.html'
         }, 2000);
 

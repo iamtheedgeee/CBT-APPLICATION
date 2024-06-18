@@ -1,5 +1,6 @@
 const CustommAPIError=require('../errors/custom-api-error')
 const {StatusCodes}=require('http-status-codes')
+const path=require('path')
 
 const jwt=require('jsonwebtoken')
 const auth= async(req,res,next)=>{
@@ -11,8 +12,9 @@ const auth= async(req,res,next)=>{
         req.student={reg_no:payload.reg_no,first_name:payload.first_name}
         next()
     } catch(error){
-        throw new CustommAPIError('Authentication Invalid',StatusCodes.UNAUTHORIZED)
-        res.send("<h1>Error in login in</h1>")
+        console.log(error)
+        //throw new CustommAPIError('Authentication Invalid',StatusCodes.UNAUTHORIZED)
+        res.sendFile(path.resolve(__dirname,'../public/login.html'))
     }
 
 }

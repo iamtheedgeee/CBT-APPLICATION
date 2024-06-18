@@ -1,5 +1,6 @@
 const CustommAPIError=require('../errors/custom-api-error')
 const {StatusCodes}=require('http-status-codes')
+const path=require('path')
 
 const jwt=require('jsonwebtoken')
 const auth= async(req,res,next)=>{
@@ -12,8 +13,9 @@ const auth= async(req,res,next)=>{
         next()
     } catch(error){
         console.log(error)
-        throw new CustommAPIError('Authentication Invalid',StatusCodes.UNAUTHORIZED)
-        
+        ///throw new CustommAPIError('Authentication Invalid',StatusCodes.UNAUTHORIZED)
+        res.sendFile(path.resolve(__dirname,'../public/administrator-login.html'))
+
     }
 }
 

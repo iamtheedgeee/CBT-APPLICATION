@@ -8,7 +8,10 @@ const register=async(req,res)=>{
     }
     const student= await Student.create(req.body)
     const token=student.create_token()
-    res.cookie("student_token",token)
+    const cookie_options = {
+        maxAge: 24 * 60 * 60 * 1000
+    }
+    res.cookie("student_token",token,cookie_options)
     res.status(201).json({msg:'success'})    
 }
 
@@ -26,7 +29,10 @@ const login=async(req,res)=>{
         throw new CustomAPIError('Invalid Credentials',StatusCodes.UNAUTHORIZED)
     }
     const token=student.create_token()
-    res.cookie("student_token",token)
+    const cookie_options = {
+        maxAge: 24 * 60 * 60 * 1000
+    }
+    res.cookie("student_token",token,cookie_options)
     res.status(201).json({msg:'success'})
 }
 

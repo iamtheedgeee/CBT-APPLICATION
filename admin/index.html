@@ -16,6 +16,7 @@
     </style>
 </head>
 <body>
+    <button onclick="logout()">LOG OUT</button>
     <h1 id="admin-name">Welcome Admin</h1>
     <h2>ALL COURSES</h2>
     <table id="courses" border="1">
@@ -123,6 +124,13 @@ async function select(course){
 
 function create(){
     document.location='create-exam.html'
+}
+
+function logout(){
+    event.preventDefault()
+    console.log(document.cookie)
+    document.cookie = "admin_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.location='/'
 }
 
 </script>
