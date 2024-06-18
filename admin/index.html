@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+
+    <style>
+        #active{
+            color:green;
+        }
+        u{
+            color:blue;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="admin-name">Welcome Admin</h1>
+    <h2>ALL COURSES</h2>
+    <table id="courses" border="1">
+        <tr>
+            <td><b>S/N</b></td>
+            <td><b>course_id</b></td>
+            <td><b>course_name</b></td>
+            <td><b>duration(minuites)</b></td>
+            <td><b>number of questions</b></td> 
+            <td><b>completed</b></td> 
+            <td><b>links</b></td>  
+            <td><b>hosting</b></td>   
+        </tr>
+    </table><br>
+    <button onclick="create()">Create New Course</button>
+    <div id="context_menu" class="context menu" style="display: none;">
+        <ul>
+            <li>edit</li>
+            <li>delete</li>
+            <li>select</li>
+        </ul>
+    </div>
+<script>
+const table=document.getElementById('courses')
+const admin_name=document.getElementById('admin-name')
+view_all()
+
+async function view_all(){
+try {
+const response_1= await fetch('/api/v2/admin')
+const{admin}= await response_1.json()
+const response_2= await fetch('/api/v2/course')
+const {courses}= await response_2.json()
+admin_name.innerHTML=`${admin.username}--${admin.reg_no}`
+for(let i=0; i<courses.length; i++){
+    course=courses[i]
+
+    let tr=document.createElement('tr')
+    let sn=document.createElement('td')
+    let course_id=document.createElement('td')
+    let course_name=document.createElement('td')  
+    let duration=document.createElement('td')
+    let number_of_questions=document.createElement('td')
+    let completed=document.createElement('td')
+    let link=document.createElement('td')
+    let hosting=document.createElement('input')
+    
+
+    sn.textContent=i+1
+    course_id.textContent=course._id
+    course_name.textContent=course.course_name
+    duration.textContent=course.duration
+    number_of_questions.textContent=course.number_of_questions
+    completed.textContent=course.completed
+    link.innerHTML="<u>edit</u>"
+    link.value=JSON.stringify(course)
+    link.onclick=()=>{edit(link.value)}
+    hosting.type="radio"
+    hosting.name="hosting"
+    hosting.value=JSON.stringify(course)
+    if(admin.hosting==course._id){hosting.checked=true}
+    hosting.onclick=async()=>{select(hosting.value)}
+    
+    tr.appendChild(sn)
+    tr.appendChild(course_id)
+    tr.appendChild(course_name)
+    tr.appendChild(duration)
+    tr.appendChild(number_of_questions)
+    tr.appendChild(completed)
+    tr.appendChild(link)
+    tr.appendChild(hosting)
+    table.appendChild(tr)
+
+}
+} catch (error) {console.log(error);document.write("something went wrong")}
+}
+function edit(course){
+    course=JSON.parse(course)
+    localStorage.setItem('course',JSON.stringify({
+            course_body:{
+                course_name:course.course_name,
+                number_of_questions:course.number_of_questions,
+                duration:course.duration,
+                questions:course.questions
+            }
+        }))
+   document.location='edit-exam.html'
+}
+
+async function select(course){
+    course=JSON.parse(course)
+    try {
+        const response=await fetch('/api/v2/admin/select',{
+            method:"PUT",
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({course_id:course._id})
+        })
+        const {msg}=await response.json()
+        if(msg!=='success'){
+            alert(msg)
+            document.location='index.html'
+        }
+    } catch (error) {console.log(error)}
+}
+
+function create(){
+    document.location='create-exam.html'
+}
+
+</script>
+</body>
+</html>

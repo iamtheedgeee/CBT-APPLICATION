@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <marquee direction="Left" id="student-names"></marquee>
+    <span id="reg_no"></span>
+    <nav>
+        <button id="log-out-btn">LOG OUT</button><br>
+        <ul>
+            <li><a href="change_password.html">Change Password</a></li>
+            <li><a href="/exam.html">Take Exam</a></li>
+        </ul>
+    </nav>
+    <h3><B>RESULTS</B></h1>
+    <table id="results" border="1" >
+        <tr>
+            <td><b>S/N</b></td>
+            <td><b>course_id</b></td>
+            <td><b>course_name</b></td>
+            <td><b>course_admin</b></td>
+            <td><b>score</b></td>
+            <td><b>grade</b></td>
+        </tr>
+    </table>
+<script>
+const results=document.getElementById('results')
+const student_name=document.getElementById('student-names')
+const reg_no=document.getElementById('reg_no')
+
+async function personalise(){
+    try {
+        const response=await fetch('/api/v2/student')
+        const {student}=await response.json()
+        student_name.innerHTML=`${student.first_name} ${student.last_name}`
+        reg_no.innerHTML=`${student.reg_no}`
+        if(student.results.length==0){
+            console.log("aww man")
+            results.innerHTML='<tr><td><b>No results to be shown</b></td></tr>'
+        }else{
+        for(let i=0; i<student.results.length; i++){
+            course=student.results[i]
+            tr=document.createElement('tr')
+
+            sn=document.createElement('td')
+            course_id=document.createElement('td')
+            course_name=document.createElement('td')
+            course_admin=document.createElement('td')
+            score=document.createElement('td')
+            grade=document.createElement('td')
+
+            sn.innerHTML=i+1
+            course_id.innerHTML=course.course_id
+            course_name.innerHTML=course.course_name
+            course_admin.innerHTML=course.course_admin
+            score.innerHTML=course.score
+            grade.innerHTML=course.grade
+
+            tr.appendChild(sn)
+            tr.appendChild(course_id)
+            tr.appendChild(course_name)
+            tr.appendChild(course_admin)
+            tr.appendChild(score)
+            tr.appendChild(grade)
+
+            results.appendChild(tr)
+        }}
+
+    } catch (error) {
+        document.write("Something went wrong try again later")
+    }
+}
+personalise()
+</script>
+</body>
+</html>

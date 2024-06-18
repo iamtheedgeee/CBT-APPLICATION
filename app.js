@@ -1,119 +1,98 @@
+require('express-async-errors')
+require('dotenv').config()
+
 const express=require('express')
-const fs=require('fs')
 const path=require('path')
+
+
 const app=express()
-const port=5000
-const {
-        create_student,
-        get_student,
-        create_course,
-        get_course,
-        update_course,
-        update_student,
-        set_course,
-        login}=require('./middleware/middleware.js')
-app.use(express.static("./documents"))
+const connect_db=require('./db/connect')
+
+const not_found_error=require('./middle_ware/not-found')
+const error_handler_middleware=require('./middle_ware/error-handler')
+
+const auth_student_router=require('./routes/auth-student')
+const auth_admin_router=require('./routes/auth-admin')
+const courses_router=require('./routes/courses')
+const students_router=require('./routes/student')
+const admin_router=require('./routes/admin')
+const exam_router=require('./routes/Exam')
+
+const auth_student=require('./middle_ware/authenticate-student')
+const auth_admin=require('./middle_ware/authenticate-admin')
+
+const Students=require('./models/Students')
+const { StatusCodes } = require('http-status-codes')
+const cookieParser = require('cookie-parser')
+
 app.use(express.json())
-     
-app.get('/admin/set-password/',(req,res)=>{
-    password=fs.readFileSync('./documents/Courses/password.txt','utf8')  
-    if(password==="nill"){
-        return res.sendFile(path.resolve(__dirname,"./documents/admin-password.html"))
-    }
-    else{
-        return res.sendFile(path.resolve(__dirname,"./documents/admin-password-change.html"))
-    }
-})
+app.use(cookieParser())
+app.use(express.static('./public'))
 
-app.get('/admin/:doc_path/:password',(req,res)=>{
-    const {doc_path,password}=req.params
-    console.log(doc_path)
-    const real_password=fs.readFileSync('./documents/Courses/password.txt','utf8')
-    if(password===real_password){
-        return res.sendFile(path.resolve(__dirname,`./documents/${doc_path}.html`))
-    }else{
-        return res.send("Unauthorized Access Incorrect Password")
-    }
-})
+//ROUTING
 
-app.post('/api/admin/password',(req,res)=>{
-    const {password}=req.body
-    fs.writeFile('./documents/Courses/password.txt',password,(err,result)=>{
-        if(err){
-            console.log(err)
-            return res.send("An Error Occurred")
-        }
-        return res.send("Successfully Changed Password")
-    })
+app.use('/api/v2/auth-student',auth_student_router)
+app.use('/api/v2/auth-admin',auth_admin_router)
+app.use('/api/v2/exam',exam_router)
+app.use('/api/v2/student',auth_student,students_router)
+app.use('/api/v2/admin',auth_admin,admin_router)
+app.use('/api/v2/course',auth_admin,courses_router)
+
+app.use('/admin/',auth_admin,express.static('./admin'))
+app.use('/student/',auth_student,express.static('./student'))
+
+
+
+
+app.get('/users',(req,res)=>{
     
-
+    res.send("helllo")
 })
+//ERROR HANDLING MIDDLEWARE
+app.use(error_handler_middleware)
+app.use(not_found_error)
 
-app.put('/api/admin/password',(req,res)=>{
-    const {old_password,new_password}=req.body
-    const real_password=fs.readFileSync('./documents/Courses/password.txt','utf8')
-    console.log(old_password,real_password)
-    if(old_password===real_password){
-        fs.writeFile('./documents/Courses/password.txt',new_password,(err,result)=>{
-            if(err){
-                console.log(err)
-                return res.send("An Error Occurred")
-            }
-            return res.send("Successfully Changed Password")
+
+
+//START SEVRER
+const port=process.env.PORT || 3000
+const ip=process.env.IP_ADDRESS
+
+/*const start= async()=>{
+    try{
+        await connect_db(process.env.MONGO_URI_STRING)
+        app.listen(port,()=>{
+        console.log("Server is Listening on port "+port)
         })
-    }else{
-        return res.send("Incorrect Password, Try again")
+    } catch(error){
+        console.log("Could not connect to db")
+        console.log(error)
     }
-})
-
-//EXAMS
-app.post('/api/exam/select',set_course,(req,res)=>{
     
-})
-
-app.get('/api/exam/',(req,res)=>{
     
-    selected_course=fs.readFileSync('./documents/Courses/current-exam.txt','utf8')
-    
-    fs.readFile(`./documents/Courses/${selected_course}.json`,'utf8',(err,result)=>{
-        if(err){console.log(err);res.send("an error occured")}
-        course_json=JSON.parse(result)
-        return res.status(200).json(course_json)
-    })
-})
-app.post('/api/exam/',create_course,(req,res)=>{
+}*/
+console.log(ip)
+const start_with_local=()=>{
+    console.log("Attempting to start with localhost")
+    return app.listen(port,`localhost`,
+    ()=>{console.log(`Server is listening on port ${port} with localhost`)})
+}
 
-})
-app.get('/api/exam/:course',get_course,(req,res)=>{
+const start_with_ip=()=>{console.log("Attempting to start with ip")
+        return app.listen(port,`${ip}`,
+        ()=>{console.log(`Server is listening on port ${port} with ip address`)})
+        .on('error',start_with_local)}
 
-})
-app.put('/api/exam/',update_course,(req,res)=>{
-    
-})
+const start= async ()=>{
+    try {
+        console.log("Attempting to connect to database.....")
+        await connect_db(process.env.MONGO_URI_STRING)
+        console.log("connected successfully")
+        start_with_ip()
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-//Students
-app.post('/api/students/',create_student,(req,res)=>{
-})
-
-app.get('/api/students/:id',get_student,(req,res)=>{
-})
-
-app.get('/api/students/:password',(req,res)=>{
-    res.status(200).sendFile(path.resolve(__dirname,'./documents/students.json'))
-})
-
-app.put('/api/students/',update_student,(req,res)=>{
-})
-
-app.get('/students/:id/:first_name/:password',login,(req,res)=>{
-})
-
-app.listen(port,"localhost",()=>{
-    console.log(`Listening on port ${port}`)
-})
-
-
-
-
-
-
+start()

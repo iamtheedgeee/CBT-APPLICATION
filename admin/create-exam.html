@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
+    <title>Welcome to CBT App</title>
+</head>
+    <body>
+        <h1>Create a Course</h1>
+        <form>
+            Course Name: <input type="text" name="names" id="course_name" autocomplete="false"><br>
+            Number of Questions <input type="number" name="numbers" id="number_of_questions"><br>
+            Time in Minuites <input type="number" name="time" id="time"><br>
+            <button type="submit" onclick="create()">Create Course</button>
+        </form>
+        <script>
+            
+            async function create(){
+                event.preventDefault()
+                course_name=document.getElementById("course_name").value
+                number_of_questions=document.getElementById("number_of_questions").value
+                duration=document.getElementById("time").value
+                const course_body={course_name,number_of_questions,duration}
+                try {
+                    const response=await fetch('/api/v2/course',{
+                    method:"POST",
+                    headers: {'Content-Type':'application/json'},
+                    body:JSON.stringify({course_body})
+                })
+                const {msg}= await response.json()
+                if(msg==='success'){
+                localStorage.setItem("course",JSON.stringify({course_body}))
+                document.location='edit-exam.html'
+                }
+                else(
+                    alert(msg)
+                )
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+       </script>
+    </body>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />   
+    
+    <title>Admin Register</title>
+    <style>
+        #status{
+           color:brown
+       }
+   </style>
+</head>
+    <body>
+        <h1>Create a New Administrator Account</h1>
+        <form>
+            <label for="Username">First Name:</label>
+            <input type="text" id="username" name="Username" autocomplete="false" placeholder="eg:John" required><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="Password" autocomplete="false" placeholder="******" required><br>
+            <label for="Email">Email:</label>
+            <input type="email" id="email" name="Email" autocomplete="false" placeholder="blahblahblah7@gmail.com" required><br>
+            <span id="status"></span>
+            <button type="submit" onclick="register()">SUBMIT</button>
+        </form>
+    </body>
+    <script>
+        async function register(){
+            event.preventDefault()
+            const username=document.getElementById("username").value
+            const password=document.getElementById("password").value
+            const email=document.getElementById("email").value
+            const result_span=document.getElementById("status")
+            try{
+                const response=await fetch('/api/v2/auth-admin/register',{
+                    method:"POST",
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({username,password,email})
+                })
+                const {msg}=await response.json()
+                if(msg==='success'){
+                    result_span.innerHTML=msg
+                    setTimeout(() => {
+                        login()
+                    }, 1000);
+                }else{
+                    result_span.innerHTML=msg
+                }
+            } catch(err){console.log(err);document.write("An error occured")}
+        }
+        function login(){
+            document.location='/admin'
+        }
+    </script>
+

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
+    <title>Welcome to CBT App</title>
+    <style>
+    </style>
+</head>
+<body>
+<div id="SELECT">
+    SELECT THE ADMIN HOSTING THE EXAM
+    <select id="select-admin"></select>
+    <button id='select-btn'>Select</button>
+</div>
+<div id="LOGIN">
+    Registration Number: <input type="text" id="reg_no"><br>
+    Password: <input type="password" id="password"><br>
+    <button id='login-btn'>Begin</button>
+</div>
+<div id="EXAM">
+    <h1 id="student-names"></h1>
+    <h2 id="exam"></h1>
+    <form name="select" style="width: 40%;">
+        <h2 id="question"></h2>
+        <input type="radio" name="answer" value="a" onclick="save()"><span id="a"></span><br>
+        <input type="radio" name="answer" value="b" onclick="save()"><span id="b"></span><br>
+        <input type="radio" name="answer" value="c" onclick="save()"><span id="c"></span><br>
+        <input type="radio" name="answer" value="d" onclick="save()"><span id="d"></span><br>
+    </form>
+    <button onclick="move(-1)">PREV</button>
+    <button onclick="move(1)">NEXT</button>
+    <button id="submit-btn">SUBMIT</button><br>
+    <span id="time">Time Left:</span>
+</div>
+<script>
+
+const examDIV=document.getElementById("EXAM")
+const loginDIV=document.getElementById("LOGIN")
+const selectDIV=document.getElementById("SELECT")
+
+const student_name=document.getElementById('student-names')
+const exam_title=document.getElementById("exam")
+const question_obj=document.getElementById("question")
+const Time= document.getElementById("time")
+
+const option_1_span=document.getElementById("a")
+const option_2_span=document.getElementById("b")
+const option_3_span=document.getElementById("c")
+const option_4_span=document.getElementById("d")
+
+const login_btn=document.getElementById('login-btn')
+const select_btn=document.getElementById('select-btn')
+const submit_btn=document.getElementById('submit-btn')
+
+document.body.removeChild(loginDIV)
+document.body.removeChild(examDIV)
+document.body.removeChild(selectDIV)
+
+select()
+async function select(){
+    document.body.appendChild(selectDIV)
+    const options=document.getElementById('select-admin')
+    try {
+        const response=await fetch('/api/v2/exam/admins')
+        const {msg,admins}=await response.json()
+        if(msg==='none-found'){
+            document.write('No Exams are being hosted currently')
+        }
+        for(let admin of admins){
+            option=document.createElement('option')
+            option.value=admin._id
+            option.innerHTML=`${admin.username} - ${admin.reg_no}`
+            options.appendChild(option)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+select_btn.addEventListener('click',async()=>{
+const admin_id=document.getElementById('select-admin').value
+try {
+    //GETS THE COURSE BEING HOSTED BY THE SELECTED ADMIN
+    const response=await fetch(`/api/v2/exam/${admin_id}`)
+    const {course}=await response.json()
+    ADMIN_ID=admin_id
+    COURSE=course
+    login()
+} catch (error) {
+    console.log(error)
+}                           
+})
+
+function login(){
+    document.body.removeChild(selectDIV)
+    document.body.appendChild(loginDIV)
+}
+
+login_btn.addEventListener('click',async()=>{
+event.preventDefault()
+const reg_no=document.getElementById("reg_no").value
+const password=document.getElementById("password").value
+try{ 
+    const response=await fetch('/api/v2/exam/login',{
+        method:"POST",
+        headers: {'Content-Type':'application/json'},
+        body:JSON.stringify({reg_no,password,admin_id:ADMIN_ID,course_id:COURSE._id})
+    })
+    const {msg,student}=await response.json()
+    if(msg!=="successful"){
+        document.write(msg)
+        setTimeout(() => {
+            document.location='/exam.html'
+        }, 3000); 
+    }
+    STUDENT=student
+    main()
+}catch(err){
+    console.log(err)
+}
+})
+
+function main(){
+    questions=COURSE.questions
+    course_name=COURSE.course_name
+    time=(COURSE.duration*60)-1
+    index=0
+    answers={}
+    document.body.removeChild(loginDIV)
+    document.body.appendChild(examDIV)
+    exam_title.innerHTML=`Exam-${course_name}`
+    student_name.innerHTML=`Student-${STUDENT.first_name} ${STUDENT.last_name}(${STUDENT.reg_no})`
+    render()
+    setInterval(() => {
+        render()
+        time-=1
+    },1000)
+}
+
+function render(){ 
+    
+if(index>=questions.length){
+    index=Number(questions.length)-1
+}
+if(index<0){
+    index=0
+}
+
+remaining_seconds=time%3600
+seconds=remaining_seconds%60
+minuites=Math.floor(remaining_seconds/60)
+hours=Math.floor(time/3600)
+Time.innerHTML=`Time Left--${hours}:${minuites}:${seconds}`
+
+selected_question=questions[index]
+question_obj.innerHTML=`${index+1}. ${selected_question.question}`
+option_1_span.innerHTML=`<b>A</b>: ${selected_question.options["a"]}`
+option_2_span.innerHTML=`<b>B</b>: ${selected_question.options["b"]}`
+option_3_span.innerHTML=`<b>C</b>: ${selected_question.options["c"]}`
+option_4_span.innerHTML=`<b>D</b>: ${selected_question.options["d"]}`
+
+buttons=document.querySelectorAll('input[type="radio"]')
+
+
+for(let button of buttons){if(button.checked){button.checked=false}}
+
+for(let answer in answers){
+    if(answer===`Q${index+1}`){
+        for(let button of buttons){
+            if(button.value===answers[`Q${index+1}`]){
+                button.checked=true
+            }
+        }
+    }
+}
+
+if(time==0){
+    Submit()
+}
+document.onvisibilitychange=()=>{
+    if(document.visibilityState==='hidden'){
+        Submit()
+    }
+}
+window.onload=()=> {
+    Submit()
+}
+}
+function move(step){index+=step;render();}
+function save(){
+    for(let button of buttons){
+        if(button.checked){
+            answers[`Q${index+1}`]=button.value
+        }
+    }    
+}
+
+submit_btn.addEventListener('click',()=>{
+    event.preventDefault()
+    Submit()
+})
+
+async function Submit(){
+    try{
+        const response=await fetch('/api/v2/Exam/submit',{
+            method:"PUT",
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({answers})
+        })
+        const {msg}=await response.json()
+        document.write(msg)
+
+        setTimeout(() => {
+            document.location='/exam.html'
+        }, 2000);
+
+    } catch(err){
+        console.log(err)
+        document.write("Error")
+    }
+}
+
+</script>
+</body>

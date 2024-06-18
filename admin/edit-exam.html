@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        select{
+            width:50%
+        }
+    </style>
+</head>
+<body>
+    <button id="select">Select Course to edit(Discards Changes)</button>
+    <div id="SELECT">
+        <h2>Select a course to edit</h2>
+        <form>
+            <select name="courses" id="courses"></select>
+            <button onclick="select()">select</button>
+        </form>
+    </div>
+    <div id="EDIT">
+        <h1 id="name"></h1>
+        <form>
+            Course Duration(minuites): <input type="number" id="course_duration"><br>
+            Number of Questions: <input type="number" id="number_of_questions"><br>
+        </form>
+        <form>
+            <h3 id="q_no"></h3>
+            Question: <input type="text" name="Question" id="question" value=""><br><br>
+            Option 1: <input type="text" name="One" id="a" value=""><input type="radio" name="answer" value="a" onclick="save()"><br><br>
+            Option 2: <input type="text" name="Two" id="b" value=""><input type="radio" name="answer" value="b" onclick="save()"><br><br>
+            Option 3: <input type="text" name="Three" id="c" value=""><input type="radio" name="answer" value="c" onclick="save()"><br><br>
+            Option 4: <input type="text" name="Four" id="d" value=""><input type="radio" name="answer" value="d" onclick="save()"><br><br>
+            <button onclick="Next(1)">Next</button>
+            <button onclick="Next(-1)">Previous</button>
+            <button onclick="Submit()">Submit</button>
+        </form>
+    </div>   
+    
+<script>
+const select_block=document.getElementById("SELECT")
+const edit_block=document.getElementById("EDIT")
+
+const course_duration=document.getElementById('course_duration')
+const number_of_questions=document.getElementById('number_of_questions')
+
+const question_number_label=document.getElementById("q_no")
+const course_name_label=document.getElementById("name")
+const question=document.getElementById("question")
+const option_1=document.getElementById("a")
+const option_2=document.getElementById("b")
+const option_3=document.getElementById("c")
+const option_4=document.getElementById("d")
+const inputs=document.querySelectorAll('input[type="text"]')
+const radios=document.querySelectorAll('input[type="radio"]')
+let questions=[]
+let index=0
+document.body.removeChild(edit_block)
+document.body.removeChild(select_block)
+
+
+const course=JSON.parse(localStorage.getItem('course'))
+if(course){
+    const {course_body}=course
+    course_name=course_body.course_name
+    number_of_questions.value=course_body.number_of_questions
+    course_duration.value=course_body.duration
+    
+    if(course_body.questions){
+    questions=course_body.questions
+    }
+    document.body.appendChild(edit_block)
+    render()
+}else{
+    selecting()
+}
+document.getElementById('select').addEventListener('click',()=>{
+    event.preventDefault()
+    try {
+        const options=document.querySelectorAll('option')
+        for(let option of options){
+            document.getElementById('select').removeChild(option)
+        }
+    } catch (error) {}
+    selecting()
+})
+async function selecting(){
+    try {
+        document.body.removeChild(edit_block)
+    } catch (error) {}
+    document.body.appendChild(select_block)
+    const course_list=document.getElementById('courses')
+    try{
+        const response=await fetch('/api/v2/course')
+        const {courses}=await response.json()
+        for(let course of courses){
+            let option=document.createElement('option')
+            option.value=course.course_name
+            option.innerHTML=course.course_name
+            course_list.appendChild(option)
+        }
+
+    } catch(error){
+        document.write("error")
+    }
+}
+
+async function select(){
+    event.preventDefault()
+    const selected_course=document.getElementById('courses').value
+    try {
+        const response=await fetch(`/api/v2/course/${selected_course}`) 
+        const {course}=await response.json()
+        course_name=course.course_name
+        number_of_questions.value=course.number_of_questions
+        course_duration.value=course.duration
+        questions=course.questions
+        document.body.removeChild(select_block)
+        document.body.appendChild(edit_block)
+        render()
+    } catch (error) {
+        console.log(error)
+    }
+    
+}
+
+
+function render(){ 
+    if(index>=Number(number_of_questions.value)-1){index=Number(number_of_questions.value)-1}
+    if(index<0){index=0}
+    course_name_label.innerHTML=course_name
+    question_number_label.innerHTML=`Q${index+1}`
+
+    for(let input of inputs){input.value=""}
+    for(let radio of radios){if(radio.checked){radio.checked=false}}
+
+    let selected_question=questions[index]
+    if(selected_question){
+        for(let input of inputs){
+            if(input.id==="question"){
+                input.value=selected_question["question"]
+            }
+            else{
+            input.value=selected_question["options"][input.id]
+            }
+        }
+        for(let radio of radios){
+            if(radio.value===selected_question["answer"]){
+                radio.checked=true
+                break
+            }
+        }
+    }
+}
+
+function Next(move){
+    event.preventDefault()
+    save();index+=move;render()
+}
+
+function save(){
+    let answer=''
+    for (let radio of radios){
+        if(radio.checked){
+            answer=radio.value
+            radio.checked=true
+            break
+        }
+    }            
+    questions[index]={
+        number: index+1,
+        question: question.value,
+        options: {
+            a:option_1.value,
+            b:option_2.value,
+            c:option_3.value,
+            d:option_4.value
+        },
+        answer: answer 
+    }
+    course_body={course_name,number_of_questions:number_of_questions.value,duration:course_duration.value,questions}
+    localStorage.setItem('course',JSON.stringify({course_body}))
+}
+
+async function Submit(){ 
+    event.preventDefault()
+    save()
+    const response= await fetch(`/api/v2/course/${course_name}`,{
+        method: "PATCH",
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({course_body})
+    })
+    const {msg}=await response.json()
+    if(msg=='success'){
+        alert(msg)
+        document.location='index.html'
+    }
+    else{
+        alert(msg)
+    }
+}
+
+</script>
+</body>
+</html>
