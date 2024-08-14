@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        select{
-            width:50%
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+  
 </head>
 <body>
-    <button id="select">Select Course to edit(Discards Changes)</button>
+    <div><button id="select" style="float:right;">Select Course to edit</button></div>
     <div id="SELECT">
         <h2>Select a course to edit</h2>
         <form>
@@ -193,7 +190,6 @@ async function Submit(){
     })
     const {msg}=await response.json()
     if(msg=='success'){
-        alert(msg)
         document.location='index.html'
     }
     else{

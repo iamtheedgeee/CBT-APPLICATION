@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
+    <title>Welcome to CBT App</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+    
+    </style>
+</head>
+<body>
+<a href="/" class="logo"><img src="logo.png" alt="well this is SUPPOSED TO BE THE LOGO" width="50px" height="50px"></a>
+
+<div id="SELECT" class="container">
+    <h2 style="text-align: center;">SELECT THE ADMIN HOSTING THE EXAM</h2>
+    <select id="select-admin"></select>
+    <button id='select-btn'>Select</button>
+</div>
+
+
+<div id="LOGIN" class="container">
+    <h2 style="text-align: center;">ENTER REG NUMBER AND PASSWORD</h2>
+    <input type="text" id="reg_email" placeholder="Email or Reg-No"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button id='login-btn'>Begin</button>
+</div>
+
+<div id="INTERMISSION" class="container">
+    <div class="circle">
+        <i class="fa fa-user"></i>
+    </div>
+    <div class="info">
+        <h3 id="info-name">NAME: </h3>
+        <h3 id="info-reg-no">REG NO: </h3>
+        <h3 id="info-admin">INSTRUCTOR: </h3>
+        <h3 id="info-course">COURSE: </h3>
+        <h3 id="info-length">NUMBER OF QUESTIONS: </h3>
+        <h3 id="info-duration">DURATION: </h3>
+        <span style="color:red;">*NB: leaving the page for any reason will result in instant submission</span>
+    </div>    
+    <button id="start-btn">BEGIN</button>
+</div>
+
+<div id="EXAM" class="container">
+    <div class="exam-container">
+        <div id="row-1">
+            <div class="exam-container-item" id="info">
+                <div class="circle" style="align-self: center; margin-top: 5px;">
+                    <i class="fa fa-user"></i>
+                </div>
+                <h4 id="student-name">NAME: </h4>
+                <h4 id="student-reg-no">REG NO: </h4>
+                <h4 id="course">COURSE: </h4>
+                <h4 id="length">NUMBER OF QUESTIONS: </h4>
+                <h4 id="duration">DURATION: </h4>
+                <span style="color:red;">*NB: leaving the page for any reason will result in instant submission</span>
+            </div>
+            <div class="exam-container-item" id="exam">
+                <h4 id="question"></h4>
+                <div id="options">
+                    <div class="option"><input type="radio" name="answer" value="a" onclick="save()"><span id="a"></span></div>
+                    <div class="option"><input type="radio" name="answer" value="b" onclick="save()"><span id="b"></span></div>
+                    <div class="option"><input type="radio" name="answer" value="c" onclick="save()"><span id="c"></span></div>
+                    <div class="option"><input type="radio" name="answer" value="d" onclick="save()"><span id="d"></span></div>
+                </div>
+                <button onclick="move(-1)"><<</button>
+                <button onclick="move(1)">>></button>
+                <button id="submit-btn">SUBMIT</button><br>
+                <span style="margin-left: 5px;" id="time">Time Left:</span>
+            </div>
+        </div>        
+        <div class="container-item" id="buttons"></div>
+    </div> 
+</div>
+
+
+<script>
+const selectDIV=document.getElementById("SELECT")
+const loginDIV=document.getElementById("LOGIN")
+const intermissionDIV=document.getElementById("INTERMISSION")
+const examDIV=document.getElementById("EXAM")
+
+
+const student_name=document.getElementById('student-names')
+const exam_title=document.getElementById("exam")
+const question_obj=document.getElementById("question")
+const Time= document.getElementById("time")
+
+const option_1_span=document.getElementById("a")
+const option_2_span=document.getElementById("b")
+const option_3_span=document.getElementById("c")
+const option_4_span=document.getElementById("d")
+
+
+const select_btn=document.getElementById('select-btn')
+const login_btn=document.getElementById('login-btn')
+const start_btn=document.getElementById('start-btn')
+const submit_btn=document.getElementById('submit-btn')
+
+const containers=document.querySelectorAll('.container')
+async function test_run(){
+    COURSE=await fetch('./test.exam.json')
+    COURSE= await COURSE.json()
+    STUDENT=await fetch('./test.student.json')
+    STUDENT=await STUDENT.json()
+    exam()
+}
+function closeAll(){for(let container of containers){container.style.display='none'}}
+//test_run()
+select()
+async function select(){
+    closeAll()
+    selectDIV.style.display='flex'
+    const options=document.getElementById('select-admin')
+    try {
+        const response=await fetch('/api/v2/exam/admins')
+        const {msg,admins}=await response.json()
+        if(msg==='none-found'){
+            document.write('No Exams are being hosted currently')
+        }
+        for(let admin of admins){
+            option=document.createElement('option')
+            option.value=admin._id
+            option.innerHTML=`${admin.username} - ${admin.reg_no}`
+            options.appendChild(option)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+select_btn.addEventListener('click',async()=>{ 
+const admin_id=document.getElementById('select-admin').value
+try {
+    //GETS THE COURSE BEING HOSTED BY THE SELECTED ADMIN
+    const response=await fetch(`/api/v2/exam/${admin_id}`)
+    const {course}=await response.json()
+
+    ADMIN_ID=admin_id
+    COURSE=course
+    login()
+} catch (error) {
+    console.log(error)
+}                           
+})
+
+function login(){
+    closeAll()
+    loginDIV.style.display='flex'
+}
+
+login_btn.addEventListener('click',async()=>{
+event.preventDefault()
+const reg_email=document.getElementById("reg_email").value
+const password=document.getElementById("password").value
+try{ 
+    const response=await fetch('/api/v2/exam/login',{
+        method:"POST",
+        headers: {'Content-Type':'application/json'},
+        body:JSON.stringify({reg_email,password,admin_id:ADMIN_ID,course_id:COURSE._id})
+    })
+    const {msg,student}=await response.json()
+    if(msg!=="successful"){
+        alert(msg)
+    }
+    else{
+        STUDENT=student
+        console.log(COURSE)
+        intermission()
+    }
+}catch(err){
+    console.log(err)
+}
+})
+function intermission(){
+    closeAll()
+    intermissionDIV.style.display='flex'
+    document.getElementById('info-name').textContent+=`${STUDENT.first_name} ${STUDENT.last_name}`
+    document.getElementById('info-reg-no').textContent+=`${STUDENT.reg_no}`
+    document.getElementById('info-admin').textContent+=`${ADMIN_ID}`
+    document.getElementById('info-course').textContent+=`${COURSE.course_name}`
+    document.getElementById('info-length').textContent+=`${COURSE.questions.length}`
+    document.getElementById('info-duration').textContent+=`${COURSE.duration}`
+
+}
+
+start_btn.addEventListener('click',()=>{
+    closeAll()
+    exam()
+})
+
+function exam(){    
+    questions=COURSE.questions
+    course_name=COURSE.course_name
+    time=(COURSE.duration*60)-1
+    index=0
+    answers={}
+
+    closeAll()
+    examDIV.style.display='flex'
+    const buttonDIV=document.getElementById('buttons')
+    for(i=1; i<=questions.length; i++){
+        btn=document.createElement('button')
+        btn.innerHTML=String(i)
+        btn.id=String(i)
+        btn.classList.add('number-buttons')
+        buttonDIV.appendChild(btn)
+    }
+    number_buttons=document.querySelectorAll('.number-buttons')
+    for(let button of number_buttons){
+        button.addEventListener('click',()=>{go_to(button.id)})
+    }
+    document.getElementById('course').textContent+=`${course_name}`
+    document.getElementById('student-name').textContent+=`${STUDENT.first_name} ${STUDENT.last_name}`
+    document.getElementById('student-reg-no').textContent+=`${STUDENT.reg_no}`
+    document.getElementById('duration').textContent+=`${COURSE.duration} minuites`
+    document.getElementById('length').textContent+=`${COURSE.questions.length}`
+    render()
+    setInterval(() => {
+        time-=1
+        render()
+
+    },1000)
+}
+
+function render(){ 
+if(index>=questions.length){
+    index=Number(questions.length)-1
+}
+if(index<0){
+    index=0
+}
+
+remaining_seconds=time%3600
+seconds=remaining_seconds%60
+minuites=Math.floor(remaining_seconds/60)
+hours=Math.floor(time/3600)
+Time.innerHTML=`Time Left--${hours}:${minuites}:${seconds}`
+
+selected_question=questions[index]
+question_obj.innerHTML=`${index+1}. ${selected_question.question}`
+option_1_span.innerHTML=`<b>a</b>: ${selected_question.options["a"]}`
+option_2_span.innerHTML=`<b>b</b>: ${selected_question.options["b"]}`
+option_3_span.innerHTML=`<b>c</b>: ${selected_question.options["c"]}`
+option_4_span.innerHTML=`<b>d</b>: ${selected_question.options["d"]}`
+
+buttons=document.querySelectorAll('input[type="radio"]')
+
+
+for(let button of buttons){if(button.checked){button.checked=false}}
+for(let answer in answers){
+    for(let button of number_buttons){
+        if(answer===`Q${button.id}`){
+            button.classList.add('answered')
+        }
+    }
+    if(answer===`Q${index+1}`){
+        for(let button of buttons){
+            if(button.value===answers[`Q${index+1}`]){
+                button.checked=true          
+            }
+        }
+    }
+} 
+
+/*if(time==0){
+    Submit()
+}
+document.onvisibilitychange=()=>{
+    if(document.visibilityState==='hidden'){
+        Submit()
+    }
+}
+window.onload=()=> {
+    Submit()
+}*/
+}
+function go_to(number){
+    index=Number(number)-1
+    render()
+}
+function move(step){index+=step;render();}
+function save(){
+    for(let button of buttons){
+        if(button.checked){
+            answers[`Q${index+1}`]=button.value
+        }
+    }    
+}
+
+submit_btn.addEventListener('click',()=>{
+    event.preventDefault()
+    Submit()
+})
+
+async function Submit(){
+    try{
+        const response=await fetch('/api/v2/Exam/submit',{
+            method:"PUT",
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({answers})
+        })
+        const {msg}=await response.json()
+        document.write(msg)
+
+        setTimeout(() => {
+            document.cookie = "exam_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.location='/exam.html'
+        }, 2000);
+
+    } catch(err){
+        console.log(err)
+        document.write("Error")
+    }
+}
+
+</script>
+</body>

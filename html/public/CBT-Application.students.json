@@ -1,0 +1,271 @@
+[{
+  "_id": {
+    "$oid": "666fe54094ca3c1634fbc4eb"
+  },
+  "first_name": "Raymond",
+  "last_name": "Anyanwu",
+  "password": "$2a$10$2JnDFcwHRvZJxZvK8Tu7oOpB5lAwxWBUlyxleWzuHONYXpUG0MFzy",
+  "email": "ray@gmail.com",
+  "results": [],
+  "reg_no": "2024/761633",
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "66700338dee0f1230086b105"
+  },
+  "first_name": "Gabriel",
+  "last_name": "smith",
+  "password": "$2a$10$FCfKT4DGi8MPuwXW.Ae8XecK7wHWqhKCguFOGiu53xXwJx6swW5Zq",
+  "email": "gaybriel@gmail.com",
+  "results": [
+    {
+      "_id": {
+        "$oid": "6670037bdee0f1230086b113"
+      },
+      "course_id": {
+        "$oid": "667002b7dee0f1230086b0f1"
+      },
+      "course_name": "Mathematics",
+      "course_admin": "GAYbriel--G6175",
+      "score": 100,
+      "grade": "A"
+    }
+  ],
+  "reg_no": "2024/830514",
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "66715c20aea1d1130cd32bac"
+  },
+  "first_name": "Raymond",
+  "last_name": "Anyanwu",
+  "password": "$2a$10$lo5CqzTYJyQOoULmH401ruV/D4pVx1C3PGjj8VzwzV6IZa85w26Wi",
+  "email": "raymondanyanwu17@gmail.com",
+  "results": [],
+  "reg_no": "2024/615340",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66715ef9594a7b2d2ce4f320"
+  },
+  "first_name": "Raymond",
+  "last_name": "Anyanwu",
+  "password": "$2a$10$KHoD1YINLFiN9bccvmQwruTDnklou9kzNLNFF1q/6pY93UwKvdNFK",
+  "email": "john@gmail.com",
+  "results": [],
+  "reg_no": "2024/112203",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "667164aeea8a8118b01d1f67"
+  },
+  "first_name": "Raymond",
+  "last_name": "Anyanwu",
+  "password": "$2a$10$EVXL20TIICL0psoADBZEP.kHDea8j8wZShttMWKUUNwn.hyq.miN6",
+  "email": "henrylovesprecious@gmail.com",
+  "results": [],
+  "reg_no": "2024/320372",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "668ad7ef8ab93a1488dd871d"
+  },
+  "first_name": "toto",
+  "last_name": "toto",
+  "password": "$2a$10$01KMUt3UHk2EuSWxq37lFOQZhVkkAqB8JGcQvtJ/jMhrGujzp.iL.",
+  "email": "toto@gmail.com",
+  "results": [
+    {
+      "_id": {
+        "$oid": "668ad8368ab93a1488dd872e"
+      },
+      "course_id": {
+        "$oid": "668ad7288ab93a1488dd8705"
+      },
+      "course_name": "Math",
+      "course_admin": "Toto--T6620",
+      "score": 50,
+      "grade": "C"
+    }
+  ],
+  "reg_no": "2024/431151",
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "668bdcf5fa75b12c88d6efb8"
+  },
+  "first_name": "kingsley",
+  "last_name": "kingsley",
+  "password": "$2a$10$IBLDU6h0H6SQg8EIvmEK6OGsoMUajHHlic4eKNzw9sPLE65ajDP0a",
+  "email": "king@gmail.com",
+  "results": [
+    {
+      "_id": {
+        "$oid": "668bdd6cfa75b12c88d6efc9"
+      },
+      "course_id": {
+        "$oid": "668bdc65fa75b12c88d6efad"
+      },
+      "course_name": "Math",
+      "course_admin": "kingsley--k3618",
+      "score": 100,
+      "grade": "A"
+    }
+  ],
+  "reg_no": "2024/835758",
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "669a9e8f7300a11664beb4d8"
+  },
+  "first_name": "Raymond",
+  "last_name": "Anyanwu",
+  "password": "$2a$10$/ZW.yGeUicOkVZ8dfsS7Ru3WicQRSmOJ8WPWYbSF.BA.M0E4SmbH.",
+  "email": "edge@gmail.com",
+  "results": [],
+  "reg_no": "2024/416788",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "669bd55bdc2b7b22a42facf1"
+  },
+  "first_name": "Raymond",
+  "last_name": "Anyanwu",
+  "password": "$2a$10$amwNjHQy0928ZHQpyIO72u1BOSz/epn1xxGJXuzSPtD/zNXi/S0mC",
+  "email": "he@he.com",
+  "results": [
+    {
+      "_id": {
+        "$oid": "669bd582dc2b7b22a42facff"
+      },
+      "course_id": {
+        "$oid": "666fe0dc7715c82ba48835d3"
+      },
+      "course_name": "Math",
+      "course_admin": "Raymond--R0714",
+      "score": 0,
+      "grade": "F"
+    },
+    {
+      "_id": {
+        "$oid": "669bd5dcdc2b7b22a42fad12"
+      },
+      "course_id": {
+        "$oid": "668ad7288ab93a1488dd8705"
+      },
+      "course_name": "Math",
+      "course_admin": "Toto--T6620",
+      "score": 0,
+      "grade": "F"
+    },
+    {
+      "_id": {
+        "$oid": "669bd642dc2b7b22a42fad20"
+      },
+      "course_id": {
+        "$oid": "6671436be9e6341c106cf1b8"
+      },
+      "course_name": "English",
+      "course_admin": "GAYbriel--G6175",
+      "score": 0,
+      "grade": "F"
+    },
+    {
+      "_id": {
+        "$oid": "669bd78fdc2b7b22a42fad31"
+      },
+      "course_id": {
+        "$oid": "668bdc65fa75b12c88d6efad"
+      },
+      "course_name": "Math",
+      "course_admin": "kingsley--k3618",
+      "score": 100,
+      "grade": "A"
+    }
+  ],
+  "reg_no": "2024/727600",
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "669bd978dc2b7b22a42fad3a"
+  },
+  "first_name": "Raymond",
+  "last_name": "Anyanwu",
+  "password": "$2a$10$OcdZ4lkVacr8OU6MDxembOeJxCMCZJeqkf4y6JJRSs5gf4rqxKAyG",
+  "email": "rray@gmail.com",
+  "results": [
+    {
+      "_id": {
+        "$oid": "669bdb08dc2b7b22a42fad56"
+      },
+      "course_id": {
+        "$oid": "6671436be9e6341c106cf1b8"
+      },
+      "course_name": "English",
+      "course_admin": "GAYbriel--G6175",
+      "score": 50,
+      "grade": "C"
+    }
+  ],
+  "reg_no": "2024/808671",
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "669bee71dc2b7b22a42fad5b"
+  },
+  "first_name": "Raymond",
+  "last_name": "Anyanwu",
+  "password": "$2a$10$OSjLldBRHdSkkpEBB1Oz4uvMb0GSV2vRcm3ISAdiFu9d/sMbYNydG",
+  "email": "emma@gmail.com",
+  "results": [
+    {
+      "_id": {
+        "$oid": "669bef0cdc2b7b22a42fad69"
+      },
+      "course_id": {
+        "$oid": "666fe0dc7715c82ba48835d3"
+      },
+      "course_name": "Math",
+      "course_admin": "Raymond--R0714",
+      "score": 0,
+      "grade": "F"
+    }
+  ],
+  "reg_no": "2024/742414",
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "669cc5e38f62130adc3b56ab"
+  },
+  "first_name": "Daniel",
+  "last_name": "Anyanwu",
+  "password": "$2a$10$CkxBi1Qft3GtP.qXk/HRPer8Udp2xcoFy.dhzs38HdNbhZRrzW9uG",
+  "email": "dan@gmail.com",
+  "results": [
+    {
+      "_id": {
+        "$oid": "669cc6598f62130adc3b56ba"
+      },
+      "course_id": {
+        "$oid": "666fe0dc7715c82ba48835d3"
+      },
+      "course_name": "Math",
+      "course_admin": "Raymond--R0714",
+      "score": 0,
+      "grade": "F"
+    }
+  ],
+  "reg_no": "2024/050206",
+  "__v": 1
+}]

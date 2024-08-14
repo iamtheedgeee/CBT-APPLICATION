@@ -1,0 +1,255 @@
+body{
+    background: #333333;
+    color:#f0f0f0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+button {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    margin:10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    width: 70%;
+}
+
+input{
+    height: 40px;
+    width: 70%;
+    border-radius: 10px;
+    border-color: green
+}
+
+input[type~=radio]{
+    cursor: pointer;
+}
+
+.main-heading{
+    text-align: center;
+}
+.btns{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.exam-link{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+.exam-link>a>button{
+    background-color: white;
+    color: green;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+}
+.form>button{
+    margin: 0;
+}
+.popup{
+    display: none;
+    align-items: center;
+    justify-items: center;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.popup-content{
+    color:green;
+    background-color:white;
+    margin: 15% auto;
+    padding: 10px;
+    border: 3px solid green;
+    border-radius: 10px;
+    width: 300px;
+    position: relative;
+}
+.close{
+    color: black;
+    cursor: pointer;
+    font-size:25px;
+    position: absolute;
+    right:3% ;
+}
+
+.alt{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.container{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.container>button{
+    width: 50%;
+}
+.container>select{
+    text-align: center;
+    color: green;
+    border: none;
+    border-radius: 5px;
+    width: 50%;
+    height: 35px;
+}
+.container>input{
+    width: 50%;
+    text-align: center;
+}
+
+#LOGIN>button{
+    margin: auto;
+}
+
+.circle {
+    width: 170px;
+    height: 170px;
+    background-color:white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle .fa-user {
+    font-size: 70px;
+    color: green;
+}
+
+.info{
+    border: 3px solid green;
+    margin: 15px;
+    padding: 15px;
+}
+.info h3{
+    text-align: left;
+}
+
+.exam-container{
+    display: grid;
+    width:90vw;
+    height: 80h;
+    grid-template-columns: 100%;
+    grid-template-rows: auto auto;
+    border: 3px solid white;
+    
+}
+
+#exam input{
+    width: 12px;
+    height: 12px;
+    padding: 5px;
+}
+#exam button{
+    width: fit-content;
+    background-color: white;
+    color: green;
+}
+
+#exam button:hover{
+    background-color: rgb(0,210,0);
+    color: white;
+}
+
+.exam-container button:hover{
+    background-color: rgb(0,210,0);
+    color: white;
+}
+.exam-container-item{
+    border: 1px solid white;
+    width:100%;
+    height: auto;
+}
+#row-1{
+    display: grid;
+    width:100%;
+    height:auto;
+    border: none;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: 100%;
+}
+
+#info{
+    display: flex;
+    flex-direction: column;
+    font-size: small;
+    align-items: flex-start;
+}
+
+#question{
+    padding-left:10px ;
+}
+
+#options{
+    margin-left:5px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    justify-content: flex-start;
+}
+.option{
+    padding:0;
+    margin-top: 20px;
+}
+
+
+#buttons{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    height: max-content;
+}
+.number-buttons{
+    width:30px;
+    height:30px;
+    margin:2px;
+    padding:0px 0px 0px 0px;
+    cursor: pointer;
+    background-color: white;
+    color: green;
+}
+.answered{
+    background-color: green;
+    color: white;
+}
+
+
+@media all and (orientation: portrait){
+    .exam-container{
+        grid-template-rows: auto auto auto;
+        grid-template-columns: 100%;
+    }
+    .exam-container .circle{
+        display: none;
+    }
+    #row-1{
+        display: flex;
+        flex-direction: column;
+    }
+   
+  
+}

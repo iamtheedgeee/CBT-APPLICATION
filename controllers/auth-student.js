@@ -16,15 +16,18 @@ const register=async(req,res)=>{
 }
 
 const login=async(req,res)=>{
-    const{reg_no,password}=req.body
-    if(!reg_no || !password){
+    const{reg_email,password}=req.body
+    if(!reg_email || !password){
         throw new CustomAPIError('Please Provide Reg_No and password',StatusCodes.BAD_REQUEST)
     }
-    const student=await Student.findOne({reg_no})
+    let student=await Student.findOne({reg_no:reg_email})
     if(!student){
-        throw new CustomAPIError('Invalid Credentials',StatusCodes.UNAUTHORIZED)
+        student=await Student.findOne({email:reg_email})
+        if(!student){
+            throw new CustomAPIError('Invalid Credentials',StatusCodes.UNAUTHORIZED)
+        }
     }
-    const accurate_password=student.compare_passwords(password)
+    const accurate_password=await student.compare_passwords(password)
     if(!accurate_password){
         throw new CustomAPIError('Invalid Credentials',StatusCodes.UNAUTHORIZED)
     }

@@ -4,28 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <marquee direction="Left" id="student-names"></marquee>
-    <span id="reg_no"></span>
-    <nav>
-        <button onclick="logout()">LOG OUT</button><br>
-        <ul>
-            <li><a href="change_password.html">Change Password</a></li>
-            <li><a href="/exam.html">Take Exam</a></li>
-        </ul>
-    </nav>
-    <h3><B>RESULTS</B></h1>
-    <table id="results" border="1" >
-        <tr>
-            <td><b>S/N</b></td>
-            <td><b>course_id</b></td>
-            <td><b>course_name</b></td>
-            <td><b>course_admin</b></td>
-            <td><b>score</b></td>
-            <td><b>grade</b></td>
-        </tr>
-    </table>
+    <div>
+        <button onclick="logout()" style="float: right;">LOG OUT</button><br>
+    </div>
+    <h4 id="student-names"></h4>
+    <h4 id="reg_no"></h4>
+    <span style="color:red;">Click the Exam button on the home page to take an exam</span>
+        <div class="results">
+            <h3 style="text-align: center;"><B>RESULTS</B></h1>
+            <table id="results">
+                <tr>
+                    <td><b>S/N</b></td>
+                    <td><b>course_id</b></td>
+                    <td><b>course_name</b></td>
+                    <td><b>course_admin</b></td>
+                    <td><b>score</b></td>
+                    <td><b>grade</b></td>
+                </tr>
+            </table>
+        </div>
 <script>
 const results=document.getElementById('results')
 const student_name=document.getElementById('student-names')
@@ -61,6 +61,8 @@ async function personalise(){
             course_admin.innerHTML=course.course_admin
             score.innerHTML=course.score
             grade.innerHTML=course.grade
+            grade.classList.add(course.grade)
+    
 
             tr.appendChild(sn)
             tr.appendChild(course_id)

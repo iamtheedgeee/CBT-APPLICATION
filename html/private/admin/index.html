@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Courses</title>
-
+    <link rel="stylesheet" href="style.css">
     <style>
         #active{
             color:green;
@@ -42,9 +42,9 @@
 <script>
 const table=document.getElementById('courses')
 const admin_name=document.getElementById('admin-name')
-view_all()
+personalise()
 
-async function view_all(){
+async function personalise(){
 try {
 const response_1= await fetch('/api/v2/admin')
 const{admin}= await response_1.json()

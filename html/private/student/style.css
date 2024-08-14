@@ -1,0 +1,70 @@
+body{
+    background: #333333;
+    color:#f0f0f0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+button {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    margin:10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+
+}
+
+input{
+    height: 40px;
+    width: 70%;
+    border-radius: 10px;
+    border-color: green;
+}
+
+input[type~=radio]{
+    cursor: pointer;
+}
+
+.results{
+    width:100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+table{
+    border:1px solid green;
+    margin:10px;
+}
+tr{
+    border: 1px solid green;
+    margin: auto;
+}
+td{
+    border:1px solid green;
+    text-align: center;
+   
+}
+
+
+.table{
+    border: 1px solid green;
+    display: flex;
+    flex-direction: column;
+}
+.row{
+    display:grid;
+    grid-template-columns:40px 150px 150px 150px 150px;
+
+}
+.headings{
+    font-weight: bold;
+}
+.data{
+    border: 1px solid green;
+    text-align: left;
+}
+.F{
+    color: red;
+}

@@ -29,10 +29,13 @@ const get_hosting=async(req,res)=>{
 
 
 const student_login=async(req,res)=>{
-    const{reg_no,password,admin_id,course_id}=req.body
-    const student=await Students.findOne({reg_no})
+    const{reg_email,password,admin_id,course_id}=req.body
+    let student=await Student.findOne({reg_no:reg_email})
     if(!student){
-        throw new CustomAPIError('invalid credentials',StatusCodes.BAD_REQUEST)
+        student=await Student.findOne({email:reg_email})
+        if(!student){
+            throw new CustomAPIError('Invalid Credentials',StatusCodes.UNAUTHORIZED)
+        }
     }
     const accurate_password=await student.compare_passwords(password)
     if(!accurate_password){

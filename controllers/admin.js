@@ -22,10 +22,16 @@ const select_exam=async(req,res)=>{
     }else{
         throw new CustomAPIError('cannot host an incomplete course',StatusCodes.BAD_REQUEST)
     }
-    
+}
+
+const deselect=async(req,res)=>{
+    const{id:admin_id}=req.admin
+    await Admin.findOneAndUpdate({_id:admin_id},{hosting:null})
+    return res.status(StatusCodes.OK).json({msg:'success'})
 }
 
 module.exports={
     get_admin,
-    select_exam
+    select_exam,
+    deselect
 }

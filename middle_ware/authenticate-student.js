@@ -12,9 +12,8 @@ const auth= async(req,res,next)=>{
         req.student={reg_no:payload.reg_no,first_name:payload.first_name}
         next()
     } catch(error){
-        console.log(error)
         //throw new CustommAPIError('Authentication Invalid',StatusCodes.UNAUTHORIZED)
-        res.sendFile(path.resolve(__dirname,'../public/login.html'))
+        res.sendFile(path.resolve(__dirname,'../html/public/student-login.html'))
     }
 
 }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="student-login-popup" class="popup" style="display: flex;">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h2 style="text-align: center;">Login(Student)</h2>
+            <form class="form">
+                <input type="text" id="sl_reg_no" autocomplete="false" placeholder="Registraton Number" required><br>
+                <input type="password" id="sl_password" autocomplete="false" placeholder="Password" required><br>
+                <button type="submit" id="stdnt-login-btn">Login</button>
+                <span class="alt" onclick="student_signing_up()">Not registered? signup now</span>
+            </form>
+        </div>
+    </div>
+
+    <div id="student-registeration-popup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h2 style="text-align: center;">Sign Up(Student)</h2>
+            <form class="form">
+                <input type="text" id="sr_F_name"  autocomplete="false" placeholder="First Name" required><br>
+                <input type="text" id="sr_L_name"  autocomplete="false" placeholder="Last Name" required><br>
+                <input type="password" id="sr_password" autocomplete="false" placeholder="Password" required><br>
+                <input type="password" id="sr_R_password" autocomplete="false" placeholder="Repeat Password" required><br>
+                <input type="email" id="sr_email" autocomplete="false" placeholder="Email" required><br>
+                <button type="submit" id="stdnt-reg-btn">Sign Up</button>
+                <span class="alt" onclick="student_logging_in()">Already registered? sign in</span>
+            </form>
+        </div>
+    </div>
+    <script></script>
+    <script src="app.js"></script>
+</body>
+</html>
