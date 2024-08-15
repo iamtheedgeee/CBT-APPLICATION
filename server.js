@@ -60,7 +60,7 @@ const start= async ()=>{
         console.log("Attempting to connect to database.....")
         await connect_db(process.env.MONGO_URI_STRING)
         console.log("connected successfully")
-        app.listen(PORT,IP,()=>{
+        app.listen(PORT,()=>{
             console.log(`Server is listening on port ${PORT} with ${IP}: http://${IP}:${PORT}`)
         })
         
